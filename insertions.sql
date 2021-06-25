@@ -25,3 +25,6 @@ VALUES (data_de_nascimento, nome, cpf, endereco);
 
 INSERT INTO outros_dados_paciente (dado, cpf)
 VALUES (dado, cpf);
+
+INSERT INTO possui (cpf, codigo_exame, codigo_amostra)
+VALUES (cpf, codigo_exame, codigo_amostra);

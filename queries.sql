@@ -1,9 +1,10 @@
 -- Lista todos os exames realizados, com seus respectivos tipos, bem como os seus
--- usuários com suas respectivas datas de solicitação e execução.
+-- pacientes com suas respectivas datas de solicitação e execução.
 
-SELECT paciente.cpf, exame.tipo, acessa.horario, amostra.data_da_coleta
-FROM paciente
-WHERE acessa.tipo='Solicitar exame';
+SELECT paciente.cpf, exame.tipo, exame.data_solicitacao, exame.data_realizacao 
+FROM ep2.possui
+	INNER JOIN ep2.paciente ON paciente.cpf=possui.cpf
+	INNER JOIN ep2.exame ON exame.codigo=possui.codigo_exame;
 
 -- Liste os 5 exames realizados com maior eficiência (diferença entre data de execução e
 -- data de solicitação). ready

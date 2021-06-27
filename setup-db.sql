@@ -321,10 +321,10 @@ VALUES
 ('90424667526', '2021-06-06 03:46:04', 'c'),
 ('47577707087', '2021-06-05 12:31:08', 'd'),
 ('66675800178', '2021-06-12 02:27:21', 'e'),
-('74437328370', '2021-06-12 23:21:11', 'f'),
+('74437328370', '2021-06-12 23:21:11', 'f');
 
 INSERT INTO ep2.possui (cpf, codigo_exame, codigo_amostra)
-VALUES (cpf, codigo_exame, codigo_amostra);
+VALUES
 ('26235437836', 0, 0),
 ('26235437836', 1, 1),
 ('90424667526', 2, 2),
@@ -332,8 +332,6 @@ VALUES (cpf, codigo_exame, codigo_amostra);
 ('66675800178', 4, 4),
 ('74437328370', 5, 5),
 ('64475669389', 6, null);
-
-
 
 INSERT INTO ep2.usuario (cpf, nome, endereco, instituicao, data_de_nascimento, login, senha)
 VALUES 

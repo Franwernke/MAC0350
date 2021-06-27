@@ -28,3 +28,12 @@ VALUES (dado, cpf);
 
 INSERT INTO possui (cpf, codigo_exame, codigo_amostra)
 VALUES (cpf, codigo_exame, codigo_amostra);
+
+INSERT INTO realiza (tipo_perfil, codigo_servico)
+VALUES (tipo_perfil, codigo_servico);
+
+INSERT INTO possui_um (cpf, tipo_perfil)
+VALUES (cpf, tipo_perfil);
+
+INSERT INTO servico (tipo, descricao)
+VALUES (tipo, descricao);

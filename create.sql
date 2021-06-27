@@ -6,7 +6,7 @@ CREATE TABLE ep2.paciente
 (
     data_de_nascimento date,
     nome character varying COLLATE pg_catalog."default" NOT NULL,
-    cpf integer NOT NULL,
+    cpf character varying COLLATE pg_catalog."default" NOT NULL,
     endereco character varying COLLATE pg_catalog."default",
     CONSTRAINT paciente_pkey PRIMARY KEY (cpf),
     CONSTRAINT paciente_unique UNIQUE (cpf)
@@ -18,7 +18,7 @@ CREATE TABLE ep2.paciente
 
 CREATE TABLE ep2.usuario
 (
-    cpf integer NOT NULL,
+    cpf character varying COLLATE pg_catalog."default" NOT NULL,
     nome character varying COLLATE pg_catalog."default" NOT NULL,
     endereco character varying COLLATE pg_catalog."default",
     instituicao character varying COLLATE pg_catalog."default",
@@ -51,9 +51,9 @@ CREATE TABLE ep2.servico
 
 CREATE TABLE ep2.acessa
 (
-    horario timestamp with time zone NOT NULL,
+    horario timestamp without time zone NOT NULL,
     tipo ep2.tipo_acesso NOT NULL,
-    cpf integer NOT NULL,
+    cpf character varying COLLATE pg_catalog."default" NOT NULL,
     codigo_servico integer NOT NULL,
     CONSTRAINT acessa_pkey PRIMARY KEY (cpf, codigo_servico, horario),
     CONSTRAINT acessa_unique UNIQUE (cpf, codigo_servico, horario),
@@ -76,8 +76,8 @@ CREATE TABLE ep2.acessa
 CREATE TABLE ep2.amostra
 (
     codigo integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 0 MINVALUE 0 MAXVALUE 2147483647 CACHE 1 ),
-    cpf integer NOT NULL,
-    data_da_coleta timestamp with time zone NOT NULL,
+    cpf character varying COLLATE pg_catalog."default" NOT NULL,
+    data_da_coleta timestamp without time zone NOT NULL,
     tipo_de_material character varying COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT amostra_pk PRIMARY KEY (cpf, codigo),
     CONSTRAINT amostra_codigo_unique UNIQUE (codigo),
@@ -95,7 +95,7 @@ CREATE TABLE ep2.amostra
 
 CREATE TABLE ep2.area_de_pesquisa
 (
-    cpf integer NOT NULL,
+    cpf character varying COLLATE pg_catalog."default" NOT NULL,
     area character varying COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT area_de_pesquisa_pkey PRIMARY KEY (cpf, area),
     CONSTRAINT area_de_pesquisa_unique UNIQUE (cpf, area),
@@ -115,6 +115,8 @@ CREATE TABLE ep2.exame
     codigo integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 0 MINVALUE 0 MAXVALUE 2147483647 CACHE 1 ),
     virus character varying COLLATE pg_catalog."default" NOT NULL,
     tipo ep2.tipo_exame NOT NULL,
+    data_solicitacao timestamp without time zone NOT NULL,
+    data_realizacao timestamp without time zone,
     CONSTRAINT exame_pkey PRIMARY KEY (codigo),
     CONSTRAINT exame_unique UNIQUE (codigo)
 );
@@ -143,7 +145,7 @@ CREATE TABLE ep2.outros_dados_amostra
 CREATE TABLE ep2.outros_dados_paciente
 (
     dado character varying COLLATE pg_catalog."default" NOT NULL,
-    cpf integer NOT NULL,
+    cpf character varying COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT outros_dados_paciente_pkey PRIMARY KEY (dado, cpf),
     CONSTRAINT outros_dados_paciente_unique UNIQUE (dado, cpf),
     CONSTRAINT outros_dados_paciente_fkey FOREIGN KEY (cpf)
@@ -172,7 +174,7 @@ CREATE TABLE ep2.perfil
 
 CREATE TABLE ep2.possui
 (
-    cpf integer NOT NULL,
+    cpf character varying COLLATE pg_catalog."default" NOT NULL,
     codigo_exame integer NOT NULL,
     codigo_amostra integer,
     CONSTRAINT possui_pkey PRIMARY KEY (cpf, codigo_exame),
@@ -200,7 +202,7 @@ CREATE TABLE ep2.possui
 
 CREATE TABLE ep2.possui_um
 (
-    cpf integer NOT NULL,
+    cpf character varying COLLATE pg_catalog."default" NOT NULL,
     tipo_perfil ep2.tipo_perfil NOT NULL,
     CONSTRAINT possui_um_pkey PRIMARY KEY (cpf, tipo_perfil),
     CONSTRAINT possui_um_unique UNIQUE (cpf, tipo_perfil),
@@ -246,7 +248,7 @@ CREATE TABLE ep2.realiza
 CREATE TABLE ep2.usuario_tutelado
 (
     nome character varying COLLATE pg_catalog."default" NOT NULL,
-    cpf_tutor integer NOT NULL,
+    cpf_tutor character varying COLLATE pg_catalog."default" NOT NULL,
     codigo_servico integer NOT NULL,
     CONSTRAINT usuario_tutelado_pkey PRIMARY KEY (nome, cpf_tutor, codigo_servico),
     CONSTRAINT usuario_tutelado_unique UNIQUE (nome, cpf_tutor, codigo_servico),

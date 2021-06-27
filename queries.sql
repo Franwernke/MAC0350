@@ -6,13 +6,10 @@ FROM paciente
 WHERE acessa.tipo='Solicitar exame';
 
 -- Liste os 5 exames realizados com maior eficiência (diferença entre data de execução e
--- data de solicitação).
+-- data de solicitação). ready
 
-SELECT *
-FROM exame
-ORDER BY amostra.data_da_coleta - acessa.horario 
-WHERE acessa.tipo='Solicitar exame', acessa.cpf=amostra.cpf
-LIMIT 5;
+SELECT *, (data_realizacao - data_solicitacao) as timeDiff 
+FROM ep2.exame ORDER BY timeDiff LIMIT 5;
 
 -- Liste os serviços que podem ser utilizados por usuários tutelados para cada usuário
 -- tutor.

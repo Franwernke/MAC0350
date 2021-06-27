@@ -1,0 +1,25 @@
+version: "3.2"
+
+services:
+  db:
+    image: postgres
+    container_name: MAC350-postgres
+    ports: 
+      - 5432:5432
+    volumes: 
+      - MAC350-postgres:/var/lib/postgres/MAC350
+    environment: 
+      POSTGRES_DB: EP2
+      POSTGRES_USER: usp
+      POSTGRES_PASSWORD: usp
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4-MAC350
+    ports:
+      - 80:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: franwernke@usp.br
+      PGADMIN_DEFAULT_PASSWORD: password
+
+volumes:
+  MAC350-postgres:

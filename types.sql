@@ -1,10 +1,3 @@
--- Type: tipo_acesso
-
--- DROP TYPE ep2.tipo_acesso;
-
-CREATE TYPE ep2.tipo_acesso AS ENUM
-    ('Visualizacao', 'Alteracao', 'Insercao', 'Remocao');
-
 -- Type: tipo_exame
 
 -- DROP TYPE ep2.tipo_exame;

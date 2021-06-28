@@ -1,12 +1,5 @@
 CREATE SCHEMA ep2;
 
--- Type: tipo_acesso
-
--- DROP TYPE ep2.tipo_acesso;
-
-CREATE TYPE ep2.tipo_acesso AS ENUM
-    ('Visualizacao', 'Alteracao', 'Insercao', 'Remocao');
-
 -- Type: tipo_exame
 
 -- DROP TYPE ep2.tipo_exame;
@@ -19,7 +12,9 @@ CREATE TYPE ep2.tipo_exame AS ENUM
 -- DROP TYPE ep2.tipo_perfil;
 
 CREATE TYPE ep2.tipo_perfil AS ENUM
-    ('Aluno', 'Pesquisador', 'Funcionario', 'Usuario comum', 'Eventuais', 'Administrador');
+    ('Aluno', 'Pesquisador', 'Funcionario', 'Usuario comum', 'Eventuais', 'Administrador',
+     'Aluno tutelado', 'Pesquisador tutelado', 'Funcionario tutelado', 'Usuario comum tutelado',
+     'Eventuais tutelado', 'Administrador tutelado');
 
 -- Type: tipo_servico
 
@@ -59,8 +54,6 @@ CREATE TABLE ep2.usuario
     CONSTRAINT usuario_unique UNIQUE (cpf)
 );
 
-
-
 -- Table: ep2.servico
 
 -- DROP TABLE ep2.servico;
@@ -74,6 +67,16 @@ CREATE TABLE ep2.servico
     CONSTRAINT servico_unique UNIQUE (codigo)
 );
 
+-- Table: ep2.perfil
+
+-- DROP TABLE ep2.perfil;
+
+CREATE TABLE ep2.perfil
+(
+    tipo ep2.tipo_perfil NOT NULL,
+    CONSTRAINT perfil_pkey PRIMARY KEY (tipo),
+    CONSTRAINT perfil_unique UNIQUE (tipo)
+);
 
 -- Table: ep2.acessa
 
@@ -82,11 +85,11 @@ CREATE TABLE ep2.servico
 CREATE TABLE ep2.acessa
 (
     horario timestamp without time zone NOT NULL,
-    tipo ep2.tipo_acesso NOT NULL,
     cpf character varying COLLATE pg_catalog."default" NOT NULL,
     codigo_servico integer NOT NULL,
-    CONSTRAINT acessa_pkey PRIMARY KEY (cpf, codigo_servico, horario),
-    CONSTRAINT acessa_unique UNIQUE (cpf, codigo_servico, horario),
+    tipo_perfil ep2.tipo_perfil NOT NULL,
+    CONSTRAINT acessa_pkey PRIMARY KEY (cpf, codigo_servico, horario, tipo_perfil),
+    CONSTRAINT acessa_unique UNIQUE (cpf, codigo_servico, horario, tipo_perfil),
     CONSTRAINT acessa_servico_fkey FOREIGN KEY (codigo_servico)
         REFERENCES ep2.servico (codigo) MATCH SIMPLE
         ON UPDATE NO ACTION
@@ -94,6 +97,11 @@ CREATE TABLE ep2.acessa
         NOT VALID,
     CONSTRAINT acessa_usuario_fkey FOREIGN KEY (cpf)
         REFERENCES ep2.usuario (cpf) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID
+    CONSTRAINT acessa_perfil_fkey FOREIGN KEY (tipo_perfil)
+        REFERENCES ep2.perfil (tipo) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID
@@ -185,19 +193,6 @@ CREATE TABLE ep2.outros_dados_paciente
         NOT VALID
 );
 
-
-
--- Table: ep2.perfil
-
--- DROP TABLE ep2.perfil;
-
-CREATE TABLE ep2.perfil
-(
-    tipo ep2.tipo_perfil NOT NULL,
-    CONSTRAINT perfil_pkey PRIMARY KEY (tipo),
-    CONSTRAINT perfil_unique UNIQUE (tipo)
-);
-
 -- Table: ep2.possui
 
 -- DROP TABLE ep2.possui;
@@ -279,11 +274,11 @@ CREATE TABLE ep2.usuario_tutelado
 (
     nome character varying COLLATE pg_catalog."default" NOT NULL,
     cpf_tutor character varying COLLATE pg_catalog."default" NOT NULL,
-    codigo_servico integer NOT NULL,
-    CONSTRAINT usuario_tutelado_pkey PRIMARY KEY (nome, cpf_tutor, codigo_servico),
-    CONSTRAINT usuario_tutelado_unique UNIQUE (nome, cpf_tutor, codigo_servico),
-    CONSTRAINT codigo_servico_fkey FOREIGN KEY (codigo_servico)
-        REFERENCES ep2.servico (codigo) MATCH SIMPLE
+    tipo_perfil ep2.tipo_perfil NOT NULL,
+    CONSTRAINT usuario_tutelado_pkey PRIMARY KEY (nome, cpf_tutor, tipo_perfil),
+    CONSTRAINT usuario_tutelado_unique UNIQUE (nome, cpf_tutor, tipo_perfil),
+    CONSTRAINT tipo_perfil_fkey FOREIGN KEY (tipo_perfil)
+        REFERENCES ep2.perfil (tipo) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID,
@@ -302,6 +297,12 @@ VALUES
 ('1990-04-06', 'April Casey', '66675800178', '96946 Brian Valleys Apt. 344\nEast Karenside, WI 26460'),
 ('2001-04-16', 'Ruth Coleman', '74437328370', '6225 Kevin Isle\nLake Marymouth, WV 69311'),
 ('1982-10-18', 'Katherine Reynolds', '64475669389', '3022 Melton Islands\nNew Kimberlyborough, NE 55731');
+
+INSERT INTO ep2.outros_dados_paciente (dado, cpf)
+VALUES
+('Chegou atrasado 3 vezes semana passada', '90424667526'),
+('Altura: 1.52m', '64475669389'),
+('Peso: 150kg', '26235437836');
 
 
 INSERT INTO ep2.exame (virus, tipo, data_solicitacao, data_realizacao) 
@@ -323,6 +324,11 @@ VALUES
 ('66675800178', '2021-06-12 02:27:21', 'e'),
 ('74437328370', '2021-06-12 23:21:11', 'f');
 
+INSERT INTO ep2.outros_dados_amostra 
+VALUES
+('Coco com sangue', 2),
+('Alta concentração de potássio', 4);
+
 INSERT INTO ep2.possui (cpf, codigo_exame, codigo_amostra)
 VALUES
 ('26235437836', 0, 0),
@@ -343,6 +349,14 @@ VALUES
 ('77823177937', 'Emma Hester', '2103 Molina Valley\nBenjaminbury, MD 03040', 'UFBA', '1981-12-02', 'Emminha', 'ViniciusBonitao'),
 ('89011513206', 'Stefanie Smith', '2619 Mcdonald Coves Apt. 417\nMarkstad, NE 20662', '', '1986-08-25', 'Steeeh2009', 'FranciscoLindo');
 
+INSERT INTO ep2.area_de_pesquisa (area, cpf)
+VALUES 
+('Oncologia', '65745289213'),
+('Dermatologia', '57831064721'),
+('Pediatria', '18152004253'),
+('Oftamologia', '77823177937'),
+('Citologia', '89011513206');
+
 INSERT INTO ep2.perfil (tipo)
 VALUES 
 ('Aluno'), 
@@ -350,10 +364,73 @@ VALUES
 ('Funcionario'), 
 ('Usuario comum'), 
 ('Eventuais'), 
-('Administrador');
+('Administrador'),
+('Aluno tutelado'),
+('Pesquisador tutelado'),
+('Funcionario tutelado'), 
+('Usuario comum tutelado'),
+('Eventuais tutelado'), 
+('Administrador tutelado');
+
+INSERT INTO ep2.usuario_tutelado(nome, cpf_tutor, tipo_perfil)
+VALUES 
+('Bailey Mcdonald', '18152004253', 'Funcionario tutelado'),
+('Nicole Hogan', '18152004253', 'Funcionario tutelado'),
+('Lance Vasquez', '89011513206', 'Usuario comum tutelado'),
+('Justin Rhodes', '65745289213', 'Pesquisador tutelado'),
+('Shawn Johnson', '47448675230', 'Administrador tutelado');
 
 INSERT INTO ep2.servico (tipo, descricao)
 VALUES 
 ('Solicitar exames', 'Pedir a realização de um exame periódico.'),
-('Inserir exames', 'Postar o resultado de um exame.' ),
-('Consultar exames','Visualizar um exame.' );
+('Inserir exames', 'Postar o resultado de um exame.'),
+('Consultar exames','Visualizar um exame.');
+
+INSERT INTO ep2.realiza (tipo_perfil, codigo_servico)
+VALUES
+('Aluno', 2),
+('Pesquisador', 2),
+('Pesquisador', 0),
+('Funcionario', 0),
+('Funcionario', 2),
+('Funcionario', 1),
+('Usuario comum', 0),
+('Eventuais', 0),
+('Administrador', 0),
+('Administrador', 2),
+('Administrador', 1),
+('Aluno tutelado', 2),
+('Pesquisador tutelado', 2),
+('Funcionario tutelado', 0),
+('Funcionario tutelado', 2),
+('Administrador tutelado', 0),
+('Administrador tutelado', 2);
+
+INSERT INTO ep2.possui_um (cpf, tipo_perfil)
+VALUES 
+('65745289213', 'Pesquisador'),
+('57831064721', 'Aluno'),
+('18152004253', 'Funcionario'),
+('47448675230', 'Administrador'),
+('71226266546', 'Eventuais'),
+('77823177937', 'Pesquisador'),
+('89011513206', 'Usuario comum');
+
+INSERT INTO ep2.acessa (horario, cpf, codigo_servico, tipo_perfil)
+VALUES 
+('2021-06-04 09:11:40', '65745289213', 0, 'Pesquisador'), 
+('2021-06-16 03:24:49', '57831064721', 0, 'Aluno'),
+('2021-06-05 03:46:04', '18152004253', 0, 'Funcionario'),
+('2021-06-04 12:31:08', '47448675230', 0, 'Administrador'),
+('2021-06-11 02:27:21', '71226266546', 0, 'Eventuais'),
+('2021-06-11 23:21:11', '77823177937', 0, 'Pesquisador'),
+('2021-05-31 10:00:48', '89011513206', 0, 'Usuario comum'),
+('2021-06-12 07:24:37', '47448675230', 1, 'Administrador'),
+('2021-06-25 00:30:58', '47448675230', 1, 'Administrador'),
+('2021-06-14 19:30:10', '47448675230', 1, 'Administrador'),
+('2021-06-11 01:44:11', '77823177937', 1, 'Pesquisador'),
+('2021-06-26 15:42:30', '77823177937', 1, 'Pesquisador'),
+('2021-06-17 19:15:40', '77823177937', 1, 'Pesquisador'),
+('2021-06-13 23:16:26', '77823177937', 1, 'Pesquisador'),
+('2021-06-12 11:32:40', '57831064721', 2, 'Aluno'),
+('2021-06-13 13:16:26', '57831064721', 2, 'Aluno');

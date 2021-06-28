@@ -44,6 +44,16 @@ CREATE TABLE ep2.servico
     CONSTRAINT servico_unique UNIQUE (codigo)
 );
 
+-- Table: ep2.perfil
+
+-- DROP TABLE ep2.perfil;
+
+CREATE TABLE ep2.perfil
+(
+    tipo ep2.tipo_perfil NOT NULL,
+    CONSTRAINT perfil_pkey PRIMARY KEY (tipo),
+    CONSTRAINT perfil_unique UNIQUE (tipo)
+);
 
 -- Table: ep2.acessa
 
@@ -52,11 +62,11 @@ CREATE TABLE ep2.servico
 CREATE TABLE ep2.acessa
 (
     horario timestamp without time zone NOT NULL,
-    tipo ep2.tipo_acesso NOT NULL,
     cpf character varying COLLATE pg_catalog."default" NOT NULL,
     codigo_servico integer NOT NULL,
-    CONSTRAINT acessa_pkey PRIMARY KEY (cpf, codigo_servico, horario),
-    CONSTRAINT acessa_unique UNIQUE (cpf, codigo_servico, horario),
+    tipo_perfil ep2.tipo_perfil NOT NULL,
+    CONSTRAINT acessa_pkey PRIMARY KEY (cpf, codigo_servico, horario, tipo_perfil),
+    CONSTRAINT acessa_unique UNIQUE (cpf, codigo_servico, horario, tipo_perfil),
     CONSTRAINT acessa_servico_fkey FOREIGN KEY (codigo_servico)
         REFERENCES ep2.servico (codigo) MATCH SIMPLE
         ON UPDATE NO ACTION
@@ -64,6 +74,11 @@ CREATE TABLE ep2.acessa
         NOT VALID,
     CONSTRAINT acessa_usuario_fkey FOREIGN KEY (cpf)
         REFERENCES ep2.usuario (cpf) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID
+    CONSTRAINT acessa_perfil_fkey FOREIGN KEY (tipo_perfil)
+        REFERENCES ep2.perfil (tipo) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID
@@ -155,19 +170,6 @@ CREATE TABLE ep2.outros_dados_paciente
         NOT VALID
 );
 
-
-
--- Table: ep2.perfil
-
--- DROP TABLE ep2.perfil;
-
-CREATE TABLE ep2.perfil
-(
-    tipo ep2.tipo_perfil NOT NULL,
-    CONSTRAINT perfil_pkey PRIMARY KEY (tipo),
-    CONSTRAINT perfil_unique UNIQUE (tipo)
-);
-
 -- Table: ep2.possui
 
 -- DROP TABLE ep2.possui;
@@ -249,11 +251,11 @@ CREATE TABLE ep2.usuario_tutelado
 (
     nome character varying COLLATE pg_catalog."default" NOT NULL,
     cpf_tutor character varying COLLATE pg_catalog."default" NOT NULL,
-    codigo_servico integer NOT NULL,
-    CONSTRAINT usuario_tutelado_pkey PRIMARY KEY (nome, cpf_tutor, codigo_servico),
-    CONSTRAINT usuario_tutelado_unique UNIQUE (nome, cpf_tutor, codigo_servico),
-    CONSTRAINT codigo_servico_fkey FOREIGN KEY (codigo_servico)
-        REFERENCES ep2.servico (codigo) MATCH SIMPLE
+    tipo_perfil ep2.tipo_perfil NOT NULL,
+    CONSTRAINT usuario_tutelado_pkey PRIMARY KEY (nome, cpf_tutor, tipo_perfil),
+    CONSTRAINT usuario_tutelado_unique UNIQUE (nome, cpf_tutor, tipo_perfil),
+    CONSTRAINT tipo_perfil_fkey FOREIGN KEY (tipo_perfil)
+        REFERENCES ep2.perfil (tipo) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID,

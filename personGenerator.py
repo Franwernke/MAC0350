@@ -12,4 +12,4 @@ def person():
 
 persons = []
 for i in range(n):
-    print(person())
+    print(person()[2])

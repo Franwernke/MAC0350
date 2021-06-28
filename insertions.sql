@@ -7,6 +7,12 @@ VALUES
 ('2001-04-16', 'Ruth Coleman', '74437328370', '6225 Kevin Isle\nLake Marymouth, WV 69311'),
 ('1982-10-18', 'Katherine Reynolds', '64475669389', '3022 Melton Islands\nNew Kimberlyborough, NE 55731');
 
+INSERT INTO ep2.outros_dados_paciente (dado, cpf)
+VALUES
+('Chegou atrasado 3 vezes semana passada', '90424667526'),
+('Altura: 1.52m', '64475669389'),
+('Peso: 150kg', '26235437836');
+
 
 INSERT INTO ep2.exame (virus, tipo, data_solicitacao, data_realizacao) 
 VALUES 
@@ -27,6 +33,11 @@ VALUES
 ('66675800178', '2021-06-12 02:27:21', 'e'),
 ('74437328370', '2021-06-12 23:21:11', 'f');
 
+INSERT INTO ep2.outros_dados_amostra 
+VALUES
+('Coco com sangue', 2),
+('Alta concentração de potássio', 4);
+
 INSERT INTO ep2.possui (cpf, codigo_exame, codigo_amostra)
 VALUES
 ('26235437836', 0, 0),
@@ -36,8 +47,6 @@ VALUES
 ('66675800178', 4, 4),
 ('74437328370', 5, 5),
 ('64475669389', 6, null);
-
-
 
 INSERT INTO ep2.usuario (cpf, nome, endereco, instituicao, data_de_nascimento, login, senha)
 VALUES 
@@ -49,6 +58,14 @@ VALUES
 ('77823177937', 'Emma Hester', '2103 Molina Valley\nBenjaminbury, MD 03040', 'UFBA', '1981-12-02', 'Emminha', 'ViniciusBonitao'),
 ('89011513206', 'Stefanie Smith', '2619 Mcdonald Coves Apt. 417\nMarkstad, NE 20662', '', '1986-08-25', 'Steeeh2009', 'FranciscoLindo');
 
+INSERT INTO ep2.area_de_pesquisa (area, cpf)
+VALUES 
+('Oncologia', '65745289213'),
+('Dermatologia', '57831064721'),
+('Pediatria', '18152004253'),
+('Oftamologia', '77823177937'),
+('Citologia', '89011513206');
+
 INSERT INTO ep2.perfil (tipo)
 VALUES 
 ('Aluno'), 
@@ -56,39 +73,74 @@ VALUES
 ('Funcionario'), 
 ('Usuario comum'), 
 ('Eventuais'), 
-('Administrador');
+('Administrador'),
+('Aluno tutelado'),
+('Pesquisador tutelado'),
+('Funcionario tutelado'), 
+('Usuario comum tutelado'),
+('Eventuais tutelado'), 
+('Administrador tutelado');
+
+INSERT INTO ep2.usuario_tutelado(nome, cpf_tutor, tipo_perfil)
+VALUES 
+('Bailey Mcdonald', '18152004253', 'Funcionario tutelado'),
+('Nicole Hogan', '18152004253', 'Funcionario tutelado'),
+('Lance Vasquez', '89011513206', 'Usuario comum tutelado'),
+('Justin Rhodes', '65745289213', 'Pesquisador tutelado'),
+('Shawn Johnson', '47448675230', 'Administrador tutelado');
 
 INSERT INTO ep2.servico (tipo, descricao)
 VALUES 
 ('Solicitar exames', 'Pedir a realização de um exame periódico.'),
-('Inserir exames', 'Postar o resultado de um exame.' ),
-('Consultar exames','Visualizar um exame.' );
+('Inserir exames', 'Postar o resultado de um exame.'),
+('Consultar exames','Visualizar um exame.');
 
+INSERT INTO ep2.realiza (tipo_perfil, codigo_servico)
+VALUES
+('Aluno', 2),
+('Pesquisador', 2),
+('Pesquisador', 0),
+('Funcionario', 0),
+('Funcionario', 2),
+('Funcionario', 1),
+('Usuario comum', 0),
+('Eventuais', 0),
+('Administrador', 0),
+('Administrador', 2),
+('Administrador', 1),
+('Aluno tutelado', 2),
+('Pesquisador tutelado', 2),
+('Funcionario tutelado', 2),
+('Administrador tutelado', 0),
+('Administrador tutelado', 2);
 
+INSERT INTO ep2.possui_um (cpf, tipo_perfil)
+VALUES 
+('65745289213', 'Pesquisador'),
+('57831064721', 'Aluno'),
+('18152004253', 'Funcionario'),
+('47448675230', 'Administrador'),
+('71226266546', 'Eventuais'),
+('77823177937', 'Pesquisador'),
+('89011513206', 'Usuario comum');
 
-INSERT INTO acessa (horario, tipo)
-VALUES (horario, tipo);
+INSERT INTO ep2.acessa (horario, cpf, codigo_servico, tipo_perfil)
+VALUES 
+('2021-06-04 09:11:40', '65745289213', 0, 'Pesquisador'), 
+('2021-06-16 03:24:49', '57831064721', 0, 'Aluno'),
+('2021-06-05 03:46:04', '18152004253', 0, 'Funcionario'),
+('2021-06-04 12:31:08', '47448675230', 0, 'Administrador'),
+('2021-06-11 02:27:21', '71226266546', 0, 'Eventuais'),
+('2021-06-11 23:21:11', '77823177937', 0, 'Pesquisador'),
+('2021-05-31 10:00:48', '89011513206', 0, 'Usuario comum'),
 
+('2021-06-12 07:24:37', '47448675230', 1, 'Administrador'),
+('2021-06-25 00:30:58', '47448675230', 1, 'Administrador'),
+('2021-06-14 19:30:10', '47448675230', 1, 'Administrador'),
+('2021-06-11 01:44:11', '77823177937', 1, 'Pesquisador'),
+('2021-06-26 15:42:30', '77823177937', 1, 'Pesquisador'),
+('2021-06-17 19:15:40', '77823177937', 1, 'Pesquisador'),
+('2021-06-13 23:16:26', '77823177937', 1, 'Pesquisador'),
 
-
-INSERT INTO area_de_pesquisa (area, cpf)
-VALUES (area, cpf);
-
-INSERT INTO outros_dados_amostra VALUES (dado, codigo_amostra);
-
-INSERT INTO usuario_tutelado(nome, cpf_tutor)
-VALUES (nome, cpf_tutor);
-
-
-INSERT INTO outros_dados_paciente (dado, cpf)
-VALUES (dado, cpf);
-
-
-
-INSERT INTO realiza (tipo_perfil, codigo_servico)
-VALUES (tipo_perfil, codigo_servico);
-
-INSERT INTO possui_um (cpf, tipo_perfil)
-VALUES (cpf, tipo_perfil);
-
-
+('2021-06-12 11:32:40', '57831064721', 2, 'Aluno'),
+('2021-06-13 13:16:26', '57831064721', 2, 'Aluno');

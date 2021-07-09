@@ -18,7 +18,7 @@ services:
     ports:
       - 80:80
     environment:
-      PGADMIN_DEFAULT_EMAIL: franwernke@usp.br
+      PGADMIN_DEFAULT_EMAIL: seu_usp@usp.br
       PGADMIN_DEFAULT_PASSWORD: password
 
 volumes:

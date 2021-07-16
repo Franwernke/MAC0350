@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-f^+syg)&lv*cowd8k=l=omd@rhjja_d_3650@xln%d6+n316=y
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'main'
+    'main',
 ]
 
 MIDDLEWARE = [
@@ -76,8 +76,12 @@ WSGI_APPLICATION = 'ep3.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'EP3',
+        'USER': 'usp',
+        'PASSWORD': 'usp',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -112,7 +116,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)

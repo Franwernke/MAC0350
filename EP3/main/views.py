@@ -10,12 +10,12 @@ def index(request):
     print(request)
     return HttpResponse("MAC0350: EP3")
 
-def Paciente(request):
-    with connection.cursor() as cursor:
-        cursor.execute('SELECT * FROM ep3_paciente')
+# def Paciente(request):
+#     with connection.cursor() as cursor:
+#         cursor.execute('SELECT * FROM ep3_paciente')
     
 
-    return HttpResponse(template.render(context, request))
+#     return HttpResponse(template.render(context, request))
 
 # def query1(request):
 #     with connection.cursor() as cursor:

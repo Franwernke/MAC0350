@@ -1,21 +1,22 @@
+from django import template
 from django.shortcuts import render
 from django.http import HttpResponse
-#from .models import Usuario
-#from .models import Perfil
+from .models import Paciente, Exame
 from django.db import connection
 from collections import namedtuple
-from django.template import loader
+from django.template import context, loader
 
 def index(request):
-    print(request)
-    return HttpResponse("MAC0350: EP3")
+    template = loader.get_template('index.html')
+    return HttpResponse(template.render())
 
-# def Paciente(request):
-#     with connection.cursor() as cursor:
-#         cursor.execute('SELECT * FROM ep3_paciente')
-    
-
-#     return HttpResponse(template.render(context, request))
+def paciente(request):
+    pacientes = Paciente.objects.all()
+    template = loader.get_template('pacienteListAll.html')
+    context = {
+        'pacientes' : pacientes
+    }
+    return HttpResponse(template.render(context, request))
 
 # def query1(request):
 #     with connection.cursor() as cursor:

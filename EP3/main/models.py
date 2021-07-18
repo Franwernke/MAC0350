@@ -33,4 +33,4 @@ class Outros_Dados_Amostra(models.Model):
 class Possui(models.Model):
     cpf = models.ForeignKey(Paciente, on_delete=models.PROTECT)
     codigo_exame = models.ForeignKey(Exame, on_delete=models.PROTECT)
-    codigo_amostra = models.ForeignKey(Amostra, on_delete=models.PROTECT)
+    codigo_amostra = models.ForeignKey(Amostra, on_delete=models.PROTECT, null=True)

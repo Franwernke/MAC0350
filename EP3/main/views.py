@@ -1,7 +1,8 @@
 from django import template
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Paciente, Exame
+from django.template.base import constant_string
+from .models import Amostra, Outros_Dados_Amostra, Paciente, Exame
 from django.db import connection
 from collections import namedtuple
 from django.template import context, loader
@@ -12,10 +13,70 @@ def index(request):
 
 def paciente(request):
     pacientes = Paciente.objects.all()
-    template = loader.get_template('pacienteListAll.html')
+    template = loader.get_template('listAll.html')
     context = {
-        'pacientes' : pacientes
+        'titulo' : 'pacientes',
+        'array' : pacientes,
     }
+    return HttpResponse(template.render(context, request))
+
+def amostra(request):
+    amostras = Amostra.objects.all()
+    template = loader.get_template('listAll.html')
+    context = {
+        'titulo' : 'amostras',
+        'array' : amostras,
+    }
+    return HttpResponse(template.render(context, request))
+
+def exame(request):
+    exames = Exame.objects.all()
+    template = loader.get_template('listAll.html')
+    context = {
+        'titulo' : 'exames',
+        'array' : exames,
+    }
+    return HttpResponse(template.render(context, request))
+
+def form(request):
+    attrs = [str(i)[14:] for i in Paciente._meta.fields]
+    template = loader.get_template('form.html')
+    context = {
+        'tipo' : 'paciente',
+        'attrs' : attrs,
+    }
+    print(type(request))
+    return HttpResponse(template.render(context, request))
+
+
+def insertPaciente(request):
+    attrs = [str(i)[14:] for i in Paciente._meta.fields]
+    template = loader.get_template('form.html')
+    context = {
+        'tipo' : 'paciente',
+        'attrs' : attrs,
+    }
+    print(type(request))
+    return HttpResponse(template.render(context, request))
+
+def insertAmostra(request):
+    attrs = [str(i)[14:] for i in Amostra._meta.fields]
+    template = loader.get_template('form.html')
+    context = {
+        'tipo' : 'amostra',
+        'attrs' : attrs,
+    }
+    print(type(request))
+    return HttpResponse(template.render(context, request))
+
+def insertExame(request):
+    attrs = [str(i)[14:] for i in Exame._meta.fields]
+    template = loader.get_template('form.html')
+    context = {
+        'tipo' : 'exame',
+        'attrs' : attrs,
+    }
+    print(type(request))
     return HttpResponse(template.render(context, request))
 
 # def query1(request):

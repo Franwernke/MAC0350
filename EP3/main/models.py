@@ -6,6 +6,9 @@ class Paciente(models.Model):
     endereco = models.CharField(max_length=255)
     data_de_nascimento = models.DateField()
 
+    def __str__(self):
+        return "Nome: " + self.nome + " Cpf: " + self.cpf
+
 class Exame(models.Model):
     codigo = models.AutoField(primary_key=True)
     virus = models.CharField(max_length=255)
@@ -13,6 +16,9 @@ class Exame(models.Model):
     data_de_solicitacao = models.DateTimeField()
     data_de_execucao = models.DateTimeField()
     #cpfs = models.ManyToOneRel(Paciente, through='Possui')
+    
+    def __str__(self):
+        return "Codigo: " + str(self.codigo) + " Virus: " + self.virus + " Tipo: " + self.tipo
 
 class Outros_Dados_Paciente(models.Model):
     dado = models.CharField(max_length=255)
@@ -25,6 +31,9 @@ class Amostra(models.Model):
     tipo_de_material = models.CharField(max_length=255)
     #cpfs = models.ManyToOneRel(Paciente, through='Possui')
     codigos_exames = models.ManyToManyField(Exame, through='Possui')
+
+    def __str__(self):
+        return "Codigo: " + str(self.codigo) + " cpf: " + self.cpf + " Tipo de Material: " + self.tipo_de_material
 
 class Outros_Dados_Amostra(models.Model):
     dado = models.CharField(max_length=255)

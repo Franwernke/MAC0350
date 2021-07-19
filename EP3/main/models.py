@@ -39,7 +39,32 @@ class Outros_Dados_Amostra(models.Model):
     dado = models.CharField(max_length=255)
     codigo_amostra = models.ForeignKey(Amostra, on_delete=models.PROTECT)
 
+    def __str__(self):
+        codigo_amostra = self.codigo_amostra.codigo
+
+        return "dado: " + str(self.dado)  + " Amostra: " + str(codigo_amostra)
+
+class Outros_Dados_Paciente(models.Model):
+    dado = models.CharField(max_length=255)
+    cpf = models.ForeignKey(Paciente, on_delete=models.PROTECT)
+
+    def __str__(self):
+        cpf = self.cpf.cpf
+
+        return "dado: " + str(self.dado)  + " cpf: " + str(cpf)
+
+
 class Possui(models.Model):
     cpf = models.ForeignKey(Paciente, on_delete=models.PROTECT)
     codigo_exame = models.ForeignKey(Exame, on_delete=models.PROTECT)
     codigo_amostra = models.ForeignKey(Amostra, on_delete=models.PROTECT, null=True)
+
+    def __str__(self):
+        cpf = self.cpf.cpf
+        codigo_exame = self.codigo_exame.codigo
+
+        if (self.codigo_amostra == None):
+            codigo_amostra = "ainda não foi coletada nenhuma amostra."
+        else:
+            codigo_amostra = self.codigo_amostra.codigo
+        return "cpf: " + str(cpf)  + " Exame: " + str(codigo_exame)+ " Amostra: " + str(codigo_amostra)

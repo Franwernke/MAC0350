@@ -6,6 +6,7 @@ from .models import Amostra, Outros_Dados_Amostra, Paciente, Exame
 from django.db import connection
 from collections import namedtuple
 from django.template import context, loader
+from forms import *
 
 def index(request):
     template = loader.get_template('index.html')
@@ -39,13 +40,21 @@ def exame(request):
     return HttpResponse(template.render(context, request))
 
 def form(request):
-    attrs = [str(i)[14:] for i in Paciente._meta.fields]
+    
+    if request.method == 'POST':
+        form = PacienteForm(request.POST)
+    else:
+        form = PacienteForm()
+        #attrs = [str(i)[14:] for i in Paciente._meta.fields]
+    
     template = loader.get_template('form.html')
     context = {
-        'tipo' : 'paciente',
-        'attrs' : attrs,
+        'form': form,
+        'tipo' : 'paciente' :, 
+        #'attrs' : attrs,
     }
     print(type(request))
+    
     return HttpResponse(template.render(context, request))
 
 

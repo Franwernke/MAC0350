@@ -8,10 +8,8 @@
 </head>
 <body>
     <h1>Inserir {{ tipo }}</h1>
-    {% for attr in attrs %}
-        {{ attr }}:
-        <input type="text">
-    {% endfor %}
+    {{ form }}
+    <input type="submit" value="OK">
 
 </body>
 </html>

@@ -218,7 +218,7 @@ def outros_dados_amostra(request):
 
 def insertOutrosDadosAmostra(request):
     if request.method == 'POST':
-        result = ExameModelForm(request.POST)
+        result = OutrosDadosAmostraModelForm(request.POST)
         result.save()
         return HttpResponseRedirect("..")
     else:
@@ -267,7 +267,7 @@ def outros_dados_paciente(request):
 
 def insertOutrosDadosPaciente(request):
     if request.method == 'POST':
-        result = ExameModelForm(request.POST)
+        result = OutrosDadosPacienteModelForm(request.POST)
         result.save()
         return HttpResponseRedirect("..")
     else:

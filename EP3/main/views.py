@@ -1,4 +1,5 @@
 from django import template
+from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template.base import constant_string
@@ -6,7 +7,7 @@ from .models import Amostra, Outros_Dados_Amostra, Paciente, Exame
 from django.db import connection
 from collections import namedtuple
 from django.template import context, loader
-from forms import *
+from .forms import *
 
 def index(request):
     template = loader.get_template('index.html')
@@ -50,7 +51,7 @@ def form(request):
     template = loader.get_template('form.html')
     context = {
         'form': form,
-        'tipo' : 'paciente' :, 
+        'tipo' : 'paciente', 
         #'attrs' : attrs,
     }
     print(type(request))
@@ -59,34 +60,46 @@ def form(request):
 
 
 def insertPaciente(request):
-    attrs = [str(i)[14:] for i in Paciente._meta.fields]
-    template = loader.get_template('form.html')
-    context = {
-        'tipo' : 'paciente',
-        'attrs' : attrs,
-    }
-    print(type(request))
-    return HttpResponse(template.render(context, request))
+    if request.method == 'POST':
+        result = PacienteModelForm(request.POST)
+        result.save()
+        return HttpResponseRedirect("..")
+    else:
+        form = PacienteModelForm()
+        template = loader.get_template('form.html')
+        context = {
+            'tipo' : 'paciente',
+            'form' : form
+        }
+        return HttpResponse(template.render(context, request))
 
 def insertAmostra(request):
-    attrs = [str(i)[14:] for i in Amostra._meta.fields]
-    template = loader.get_template('form.html')
-    context = {
-        'tipo' : 'amostra',
-        'attrs' : attrs,
-    }
-    print(type(request))
-    return HttpResponse(template.render(context, request))
+    if request.method == 'POST':
+        result = AmostraModelForm(request.POST)
+        result.save()
+        return HttpResponseRedirect("..")
+    else:
+        form = AmostraModelForm()
+        template = loader.get_template('form.html')
+        context = {
+            'tipo' : 'amostra',
+            'form' : form
+        }
+        return HttpResponse(template.render(context, request))
 
 def insertExame(request):
-    attrs = [str(i)[14:] for i in Exame._meta.fields]
-    template = loader.get_template('form.html')
-    context = {
-        'tipo' : 'exame',
-        'attrs' : attrs,
-    }
-    print(type(request))
-    return HttpResponse(template.render(context, request))
+    if request.method == 'POST':
+        result = ExameModelForm(request.POST)
+        result.save()
+        return HttpResponseRedirect("..")
+    else:
+        form = ExameModelForm()
+        template = loader.get_template('form.html')
+        context = {
+            'tipo' : 'exame',
+            'form' : form
+        }
+        return HttpResponse(template.render(context, request))
 
 # def query1(request):
 #     with connection.cursor() as cursor:

@@ -8,10 +8,18 @@
 </head>
 <body>
   <h1>{{ titulo }}</h1>
-  <ol>
+  <ul>
     {% for row in array %}
-      <li>{{ row }}</li>
+      <li>
+        {{ row }} 
+        <a href="update/{{row.pk}}"><button>modificar</button></a>
+        <a href="delete/{{row.pk}}"><button>delete</button></a>
+      </li>
+      
     {% endfor %}
-  </ol>
+  </ul>
+
+  <a href='insert'> <button> inserir</button></a>
+  <a href='..'> <button> voltar</button></a>
 </body>
 </html>

@@ -23,7 +23,7 @@ def paciente(request):
     return HttpResponse(template.render(context, request))
 
 def amostra(request):
-    amostras = Amostra.objects.all()
+    amostras = Amostra.objects.all().order_by("codigo")
     template = loader.get_template('listAll.html')
     context = {
         'titulo' : 'amostras',
@@ -32,32 +32,13 @@ def amostra(request):
     return HttpResponse(template.render(context, request))
 
 def exame(request):
-    exames = Exame.objects.all()
+    exames = Exame.objects.all().order_by("codigo")
     template = loader.get_template('listAll.html')
     context = {
         'titulo' : 'exames',
         'array' : exames,
     }
     return HttpResponse(template.render(context, request))
-
-def form(request):
-    
-    if request.method == 'POST':
-        form = PacienteForm(request.POST)
-    else:
-        form = PacienteForm()
-        #attrs = [str(i)[14:] for i in Paciente._meta.fields]
-    
-    template = loader.get_template('form.html')
-    context = {
-        'form': form,
-        'tipo' : 'paciente', 
-        #'attrs' : attrs,
-    }
-    print(type(request))
-    
-    return HttpResponse(template.render(context, request))
-
 
 def insertPaciente(request):
     if request.method == 'POST':
@@ -68,8 +49,9 @@ def insertPaciente(request):
         form = PacienteModelForm()
         template = loader.get_template('form.html')
         context = {
+            'operacao' : 'inserir',
             'tipo' : 'paciente',
-            'form' : form
+            'form' : form,
         }
         return HttpResponse(template.render(context, request))
 
@@ -82,6 +64,7 @@ def insertAmostra(request):
         form = AmostraModelForm()
         template = loader.get_template('form.html')
         context = {
+            'operacao' : 'inserir',
             'tipo' : 'amostra',
             'form' : form
         }
@@ -96,42 +79,80 @@ def insertExame(request):
         form = ExameModelForm()
         template = loader.get_template('form.html')
         context = {
+            'operacao' : 'inserir',
             'tipo' : 'exame',
             'form' : form
         }
         return HttpResponse(template.render(context, request))
 
-# def query1(request):
-#     with connection.cursor() as cursor:
-#         cursor.execute('SELECT * FROM ep3_usuario')
-#         result = named_tuple_fetchall(cursor)
-    
-#     template = loader.get_template('query1.html')
-#     context = {'query1_result_list': result,}
-    
-#     return HttpResponse(template.render(context, request))
+def updatePaciente(request, paciente_id):
+    paciente = Paciente.objects.get(pk = paciente_id)
 
-# def query2(request):
-#     with connection.cursor() as cursor:
-#         cursor.execute('\
-#                 SELECT u.nome, u.login, u.cpf, string_agg(p.tipo, \', \') as perfis FROM ep3_usuario as u\
-#                 LEFT JOIN ep3_usuario_possui_perfil as possui\
-#                 ON u.id = possui.usuario_id\
-#                 JOIN ep3_perfil as p\
-#                 ON possui.perfil_id = p.id\
-#                 GROUP BY u.nome, u.login, u.cpf\
-#                 ')
-#         result = named_tuple_fetchall(cursor)
-#     print(result)
-#     template = loader.get_template('query2.html')
-#     context = {'query2_result_list': result,}
-    
-#     return HttpResponse(template.render(context, request))
-# #metodos auxiliares
+    if request.method == 'POST':
+        form = PacienteModelForm(request.POST, instance=paciente)
+        form.save()
+        return HttpResponseRedirect("../../paciente/")
+    else: 
+        form =  PacienteModelForm(instance=paciente)
+        form.fields['cpf'].widget.attrs['readonly'] = True
+        template = loader.get_template('form.html')
 
-# def named_tuple_fetchall(cursor):
-#     desc = cursor.description
-#     nt_result = namedtuple('Result', [col[0] for col in desc])
-#     result = [nt_result(*row) for row in cursor.fetchall()]
+        context = {
+                'operacao' : 'update',
+                'tipo' : 'Paciente',
+                'form' : form,
+            }
+        return HttpResponse(template.render(context, request))
 
-#     return result
+def updateAmostra(request, amostra_id):
+    amostra = Amostra.objects.get(pk = amostra_id)
+
+    if request.method == 'POST':
+        form = AmostraModelForm(request.POST, instance=amostra)
+        form.save()
+        return HttpResponseRedirect("../../amostra/")
+    else: 
+        form = AmostraModelForm(instance=amostra)
+        form.fields['cpf'].widget.attrs['readonly'] = True
+        template = loader.get_template('form.html')
+
+        context = {
+                'operacao' : 'update',
+                'tipo' : 'amostra',
+                'form' : form,
+            }
+        return HttpResponse(template.render(context, request))
+
+def updateExame(request, exame_id):
+    exame = Exame.objects.get(pk = exame_id)
+    if request.method == 'POST':
+        form = ExameModelForm(request.POST, instance=exame)
+        form.save()
+        return HttpResponseRedirect("../../exame/")
+    else: 
+        form = ExameModelForm(instance=exame)
+        template = loader.get_template('form.html')
+
+        context = {
+                'operacao' : 'update',
+                'tipo' : 'Exame',
+                'form' : form
+            }
+        return HttpResponse(template.render(context, request))
+
+
+
+def deletePaciente(request, paciente_id):
+    paciente = Paciente.objects.get(pk = paciente_id)
+    paciente.delete()
+    return HttpResponseRedirect("../../paciente/")
+
+def deleteAmostra(request, amostra_id):
+    amostra = Amostra.objects.get(pk = amostra_id)
+    amostra.delete()
+    return HttpResponseRedirect("../../amostra/")
+
+def deleteExame(request, exame_id):
+    exame = Exame.objects.get(pk = exame_id)
+    exame.delete()
+    return HttpResponseRedirect("../../exame/")

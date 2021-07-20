@@ -9,6 +9,9 @@ class Paciente(models.Model):
     def __str__(self):
         return "Nome: " + self.nome + " Cpf: " + self.cpf
 
+    def get_fields(self):
+        return [(field.name, field.value_to_string(self)) for field in self._meta.fields]
+
 class Exame(models.Model):
     codigo = models.AutoField(primary_key=True)
     virus = models.CharField(max_length=255)
@@ -19,10 +22,15 @@ class Exame(models.Model):
     
     def __str__(self):
         return "Codigo: " + str(self.codigo) + " Virus: " + self.virus + " Tipo: " + self.tipo
+    def get_fields(self):
+        return [(field.name, field.value_to_string(self)) for field in self._meta.fields]
 
 class Outros_Dados_Paciente(models.Model):
     dado = models.CharField(max_length=255)
     cpf = models.ForeignKey(Paciente, on_delete=models.PROTECT)
+    
+    def get_fields(self):
+        return [(field.name, field.value_to_string(self)) for field in self._meta.fields]
 
 class Amostra(models.Model):
     codigo = models.AutoField(primary_key=True)
@@ -34,11 +42,15 @@ class Amostra(models.Model):
 
     def __str__(self):
         return "Codigo: " + str(self.codigo) + " cpf: " + self.cpf + " Tipo de Material: " + self.tipo_de_material
+    def get_fields(self):
+        return [(field.name, field.value_to_string(self)) for field in self._meta.fields]
 
 class Outros_Dados_Amostra(models.Model):
     dado = models.CharField(max_length=255)
     codigo_amostra = models.ForeignKey(Amostra, on_delete=models.PROTECT)
 
+    def get_fields(self):
+        return [(field.name, field.value_to_string(self)) for field in self._meta.fields]
     def __str__(self):
         codigo_amostra = self.codigo_amostra.codigo
 
@@ -48,6 +60,8 @@ class Outros_Dados_Paciente(models.Model):
     dado = models.CharField(max_length=255)
     cpf = models.ForeignKey(Paciente, on_delete=models.PROTECT)
 
+    def get_fields(self):
+        return [(field.name, field.value_to_string(self)) for field in self._meta.fields]
     def __str__(self):
         cpf = self.cpf.cpf
 
@@ -58,7 +72,9 @@ class Possui(models.Model):
     cpf = models.ForeignKey(Paciente, on_delete=models.PROTECT)
     codigo_exame = models.ForeignKey(Exame, on_delete=models.PROTECT)
     codigo_amostra = models.ForeignKey(Amostra, on_delete=models.PROTECT, null=True)
-
+    
+    def get_fields(self):
+        return [(field.name, field.value_to_string(self)) for field in self._meta.fields]
     def __str__(self):
         cpf = self.cpf.cpf
         codigo_exame = self.codigo_exame.codigo

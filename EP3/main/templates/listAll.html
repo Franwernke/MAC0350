@@ -4,22 +4,49 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ titulo }}</title>
+  <style>
+    .grid {
+      padding: 0 0 50px 50px;
+
+      display: grid;
+      grid-template-columns: 400px 80px 80px;
+      row-gap: 10px;
+    }
+  </style>
+  <title> {{ titulo }} </title>
 </head>
 <body>
   <h1>{{ titulo }}</h1>
-  <ul>
+  <div class="grid">
     {% for row in array %}
-      <li>
-        {{ row }} 
-        <a href="update/{{row.pk}}"><button>modificar</button></a>
-        <a href="delete/{{row.pk}}"><button>delete</button></a>
-      </li>
+      <span>
+        {% for field, data in row.get_fields %}
+          {{ field.capitalize }}: {{ data }} <br>
+        {% endfor %}
+        {% if outros_dados %}
+          Outros dados:
+          <ul>
+            {% for dado in outros_dados %}
+              <li> {{ dado }} </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </span>
       
+      <a href="update/{{row.pk}}" class="modificar">
+        <button> modificar </button>
+      </a>
+      <a href="delete/{{row.pk}}">
+        <button> deletar </button>
+      </a>
     {% endfor %}
-  </ul>
+  </div>
 
-  <a href='insert'> <button> inserir</button></a>
-  <a href='..'> <button> voltar</button></a>
+  <a href='insert'> 
+    <button> inserir </button>
+  </a>
+  <a href='..'> 
+    <button> voltar</button>
+  </a>
 </body>
 </html>

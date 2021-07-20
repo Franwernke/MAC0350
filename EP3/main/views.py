@@ -1,12 +1,8 @@
-from django import template
-from django.http.response import HttpResponseRedirect
-from django.shortcuts import render
+from django.http.response import HttpResponseBadRequest, HttpResponseRedirect
 from django.http import HttpResponse
-from django.template.base import constant_string
 from .models import Amostra, Outros_Dados_Amostra, Paciente, Exame
-from django.db import connection
-from collections import namedtuple
-from django.template import context, loader
+
+from django.template import loader
 from .forms import *
 
 def index(request):
@@ -15,10 +11,13 @@ def index(request):
 
 def paciente(request):
     pacientes = Paciente.objects.all()
+    outros_dados_paciente = Outros_Dados_Paciente.objects.all()
+        
     template = loader.get_template('listAll.html')
     context = {
         'titulo' : 'pacientes',
         'array' : pacientes,
+        'outros_dados' : outros_dados_paciente,
     }
     return HttpResponse(template.render(context, request))
 
@@ -286,7 +285,6 @@ def updateOutrosDadosPaciente(request, outros_dados_paciente_id):
     if request.method == 'POST':
         form = OutrosDadosPacienteModelForm(request.POST, instance=outros_dados_paciente)
         form.save()
-        return HttpResponseRedirect("../../outrosDadosPaciente/")
     else: 
         form = OutrosDadosPacienteModelForm(instance=outros_dados_paciente)
         template = loader.get_template('form.html')

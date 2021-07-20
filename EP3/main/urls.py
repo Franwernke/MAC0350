@@ -15,7 +15,6 @@ urlpatterns = [
     path('amostra/update/<amostra_id>', views.updateAmostra, name='updateAmostra'),
     path('exame/update/<exame_id>', views.updateExame, name='updateExame'),
 
-
     path('paciente/delete/<paciente_id>', views.deletePaciente, name='deletePaciente'),
     path('amostra/delete/<amostra_id>', views.deleteAmostra, name='deleteAmostra'),
     path('exame/delete/<exame_id>', views.deleteExame, name='deleteExame'),

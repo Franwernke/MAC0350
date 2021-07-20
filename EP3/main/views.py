@@ -39,6 +39,33 @@ def exame(request):
     }
     return HttpResponse(template.render(context, request))
 
+def possui(request):
+    relation = Possui.objects.all()
+    template = loader.get_template('listAll.html')
+    context = {
+        'titulo' : 'possui',
+        'array' : relation,
+    }
+    return HttpResponse(template.render(context, request))
+
+def outros_dados_amostra(request):
+    relation = Outros_Dados_Amostra.objects.all()
+    template = loader.get_template('listAll.html')
+    context = {
+        'titulo' : 'outros_dados_amostra',
+        'array' : relation,
+    }
+    return HttpResponse(template.render(context, request))
+
+def outros_dados_paciente(request):
+    relation = Outros_Dados_Paciente.objects.all()
+    template = loader.get_template('listAll.html')
+    context = {
+        'titulo' : 'outros_dados_paciente',
+        'array' : relation,
+    }
+    return HttpResponse(template.render(context, request))
+
 def insertPaciente(request):
     if request.method == 'POST':
         result = PacienteModelForm(request.POST)
@@ -83,6 +110,54 @@ def insertExame(request):
             'form' : form
         }
         return HttpResponse(template.render(context, request))
+
+
+def insertPossui(request):
+    if request.method == 'POST':
+        result = ExameModelForm(request.POST)
+        result.save()
+        return HttpResponseRedirect("..")
+    else:
+        form = PossuiModelForm()
+        template = loader.get_template('form.html')
+        context = {
+            'operacao' : 'inserir',
+            'tipo' : 'possui',
+            'form' : form
+        }
+        return HttpResponse(template.render(context, request))
+
+def insertOutrosDadosAmostra(request):
+    if request.method == 'POST':
+        result = OutrosDadosAmostraModelForm(request.POST)
+        result.save()
+        return HttpResponseRedirect("..")
+    else:
+        form = OutrosDadosAmostraModelForm()
+        template = loader.get_template('form.html')
+        context = {
+            'operacao' : 'inserir',
+            'tipo' : 'outros_dados_amostra',
+            'form' : form
+        }
+        return HttpResponse(template.render(context, request))
+
+def insertOutrosDadosPaciente(request):
+    if request.method == 'POST':
+        result = OutrosDadosPacienteModelForm(request.POST)
+        result.save()
+        return HttpResponseRedirect("..")
+    else:
+        form = OutrosDadosPacienteModelForm()
+        template = loader.get_template('form.html')
+        context = {
+            'operacao' : 'inserir',
+            'tipo' : 'outros_dados_paciente',
+            'form' : form
+        }
+        return HttpResponse(template.render(context, request))
+
+
 
 def updatePaciente(request, paciente_id):
     paciente = Paciente.objects.get(pk = paciente_id)
@@ -139,49 +214,6 @@ def updateExame(request, exame_id):
             }
         return HttpResponse(template.render(context, request))
 
-
-
-def deletePaciente(request, paciente_id):
-    paciente = Paciente.objects.get(pk = paciente_id)
-    paciente.delete()
-    return HttpResponseRedirect("../../paciente/")
-
-def deleteAmostra(request, amostra_id):
-    amostra = Amostra.objects.get(pk = amostra_id)
-    amostra.delete()
-    return HttpResponseRedirect("../../amostra/")
-
-def deleteExame(request, exame_id):
-    exame = Exame.objects.get(pk = exame_id)
-    exame.delete()
-    return HttpResponseRedirect("../../exame/")
-
-
-def possui(request):
-    relation = Possui.objects.all()
-    template = loader.get_template('listAll.html')
-    context = {
-        'titulo' : 'possui',
-        'array' : relation,
-    }
-    return HttpResponse(template.render(context, request))
-
-def insertPossui(request):
-    if request.method == 'POST':
-        result = ExameModelForm(request.POST)
-        result.save()
-        return HttpResponseRedirect("..")
-    else:
-        form = PossuiModelForm()
-        template = loader.get_template('form.html')
-        context = {
-            'operacao' : 'inserir',
-            'tipo' : 'possui',
-            'form' : form
-        }
-        return HttpResponse(template.render(context, request))
-
-
 def updatePossui(request, possui_id):
     possui = Possui.objects.get(pk = possui_id)
     if request.method == 'POST':
@@ -199,37 +231,22 @@ def updatePossui(request, possui_id):
             }
         return HttpResponse(template.render(context, request))
 
-
-def deletePossui(request, possui_id):
-    possui = Possui.objects.get(pk = possui_id)
-    possui.delete()
-    return HttpResponseRedirect("../../possui/")
-
-
-def outros_dados_amostra(request):
-    relation = Outros_Dados_Amostra.objects.all()
-    template = loader.get_template('listAll.html')
-    context = {
-        'titulo' : 'outros_dados_amostra',
-        'array' : relation,
-    }
-    return HttpResponse(template.render(context, request))
-
-def insertOutrosDadosAmostra(request):
+def updateOutrosDadosPaciente(request, outros_dados_paciente_id):
+    outros_dados_paciente = Outros_Dados_Paciente.objects.get(pk = outros_dados_paciente_id)
     if request.method == 'POST':
-        result = OutrosDadosAmostraModelForm(request.POST)
-        result.save()
-        return HttpResponseRedirect("..")
-    else:
-        form = OutrosDadosAmostraModelForm()
+        form = OutrosDadosPacienteModelForm(request.POST, instance=outros_dados_paciente)
+        form.save()
+        return HttpResponseRedirect("../../outrosDadosPaciente/")
+    else: 
+        form = OutrosDadosPacienteModelForm(instance=outros_dados_paciente)
         template = loader.get_template('form.html')
-        context = {
-            'operacao' : 'inserir',
-            'tipo' : 'outros_dados_amostra',
-            'form' : form
-        }
-        return HttpResponse(template.render(context, request))
 
+        context = {
+                'operacao' : 'update',
+                'tipo' : 'OutrosDadosPaciente',
+                'form' : form
+            }
+        return HttpResponse(template.render(context, request))
 
 def updateOutrosDadosAmostra(request, outros_dados_amostra_id):
     outros_dados_amostra = Outros_Dados_Amostra.objects.get(pk = outros_dados_amostra_id)
@@ -249,53 +266,31 @@ def updateOutrosDadosAmostra(request, outros_dados_amostra_id):
         return HttpResponse(template.render(context, request))
 
 
+def deletePaciente(request, paciente_id):
+    paciente = Paciente.objects.get(pk = paciente_id)
+    paciente.delete()
+    return HttpResponseRedirect("../../paciente/")
+
+def deleteAmostra(request, amostra_id):
+    amostra = Amostra.objects.get(pk = amostra_id)
+    amostra.delete()
+    return HttpResponseRedirect("../../amostra/")
+
+def deleteExame(request, exame_id):
+    exame = Exame.objects.get(pk = exame_id)
+    exame.delete()
+    return HttpResponseRedirect("../../exame/")
+
+
+def deletePossui(request, possui_id):
+    possui = Possui.objects.get(pk = possui_id)
+    possui.delete()
+    return HttpResponseRedirect("../../possui/")
+
 def deleteOutrosDadosAmostra(request, outros_dados_amostra_id):
     outros_dados_amostra = Outros_Dados_Amostra.objects.get(pk = outros_dados_amostra_id)
     outros_dados_amostra.delete()
     return HttpResponseRedirect("../../outrosDadosAmostra/")
-
-
-def outros_dados_paciente(request):
-    relation = Outros_Dados_Paciente.objects.all()
-    template = loader.get_template('listAll.html')
-    context = {
-        'titulo' : 'outros_dados_paciente',
-        'array' : relation,
-    }
-    return HttpResponse(template.render(context, request))
-
-def insertOutrosDadosPaciente(request):
-    if request.method == 'POST':
-        result = OutrosDadosPacienteModelForm(request.POST)
-        result.save()
-        return HttpResponseRedirect("..")
-    else:
-        form = OutrosDadosPacienteModelForm()
-        template = loader.get_template('form.html')
-        context = {
-            'operacao' : 'inserir',
-            'tipo' : 'outros_dados_paciente',
-            'form' : form
-        }
-        return HttpResponse(template.render(context, request))
-
-
-def updateOutrosDadosPaciente(request, outros_dados_paciente_id):
-    outros_dados_paciente = Outros_Dados_Paciente.objects.get(pk = outros_dados_paciente_id)
-    if request.method == 'POST':
-        form = OutrosDadosPacienteModelForm(request.POST, instance=outros_dados_paciente)
-        form.save()
-    else: 
-        form = OutrosDadosPacienteModelForm(instance=outros_dados_paciente)
-        template = loader.get_template('form.html')
-
-        context = {
-                'operacao' : 'update',
-                'tipo' : 'OutrosDadosPaciente',
-                'form' : form
-            }
-        return HttpResponse(template.render(context, request))
-
 
 def deleteOutrosDadosPaciente(request, outros_dados_paciente_id):
     outros_dados_paciente = Outros_Dados_Paciente.objects.get(pk = outros_dados_paciente_id)

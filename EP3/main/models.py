@@ -52,9 +52,7 @@ class Outros_Dados_Amostra(models.Model):
     def get_fields(self):
         return [(field.name, field.value_to_string(self)) for field in self._meta.fields]
     def __str__(self):
-        codigo_amostra = self.codigo_amostra.codigo
-
-        return "dado: " + str(self.dado)  + " Amostra: " + str(codigo_amostra)
+        return "dado: " + str(self.dado)
 
 class Outros_Dados_Paciente(models.Model):
     dado = models.CharField(max_length=255)
@@ -63,9 +61,7 @@ class Outros_Dados_Paciente(models.Model):
     def get_fields(self):
         return [(field.name, field.value_to_string(self)) for field in self._meta.fields]
     def __str__(self):
-        cpf = self.cpf.cpf
-
-        return "dado: " + str(self.dado)  + " cpf: " + str(cpf)
+        return "dado: " + str(self.dado) 
 
 
 class Possui(models.Model):

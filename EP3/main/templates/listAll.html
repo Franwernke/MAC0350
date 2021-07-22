@@ -12,6 +12,13 @@
       grid-template-columns: 400px 80px 80px;
       row-gap: 10px;
     }
+
+
+    .flex {
+      display: flex;
+      flex-direction: row;
+    }
+
   </style>
   <title> {{ titulo }} </title>
 </head>
@@ -20,25 +27,48 @@
   <div class="grid">
     {% for row in array %}
       <span>
-        {% for field, data in row.get_fields %}
-          {{ field.capitalize }}: {{ data }} <br>
-        {% endfor %}
-        {% if outros_dados %}
+        
+        {% if row.0 %}
+          {% for field, data in row.0 %}
+            {{ field.capitalize }}: {{ data }} <br>
+          {% endfor %}
+        {% else %}
+          {% for field, data in row.get_fields %}
+            {{ field.capitalize }}: {{ data }} <br>
+          {% endfor %}
+        {% endif %}
+
+        {% if row.1 %}
           Outros dados:
           <ul>
-            {% for dado in outros_dados %}
+            {% for dado in row.1 %}
               <li> {{ dado }} </li>
             {% endfor %}
           </ul>
         {% endif %}
       </span>
       
-      <a href="update/{{row.pk}}" class="modificar">
-        <button> modificar </button>
-      </a>
-      <a href="delete/{{row.pk}}">
-        <button> deletar </button>
-      </a>
+      {% if row.0 %}
+        <div class="flex">
+          <a href="update/{{row.0.0.1}}" class="modificar">
+            <button> modificar </button>
+          </a>
+          <a href="delete/{{row.0.0.1}}">
+            <button> deletar </button>
+          </a>
+          <a href="other/insert/{{row.0.0.1}}">
+            <button> inserir outro dado </button>
+          </a>
+      </div>
+      <br>
+      {% else %}
+        <a href="update/{{row.pk}}" class="modificar">
+          <button> modificar </button>
+        </a>
+        <a href="delete/{{row.pk}}">
+          <button> deletar </button>
+        </a>
+      {% endif %}
     {% endfor %}
   </div>
 

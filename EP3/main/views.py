@@ -12,21 +12,40 @@ def index(request):
 def paciente(request):
     pacientes = Paciente.objects.all()
     outros_dados_paciente = Outros_Dados_Paciente.objects.all()
+
+    pacientesComOutrosDados = []
+
+    for paciente in pacientes:
+        fields = paciente.get_fields()
+        outros_dados = outros_dados_paciente.filter(cpf = paciente.cpf)
+        outros_dados = outros_dados if len(outros_dados) != 0 else None
+        pair = (fields, outros_dados)
+        pacientesComOutrosDados.append(pair)
         
     template = loader.get_template('listAll.html')
     context = {
         'titulo' : 'pacientes',
-        'array' : pacientes,
-        'outros_dados' : outros_dados_paciente,
+        'array' : pacientesComOutrosDados,
     }
     return HttpResponse(template.render(context, request))
 
 def amostra(request):
     amostras = Amostra.objects.all().order_by("codigo")
+    outros_dados_amostra = Outros_Dados_Amostra.objects.all()
+
+    amostrasComOutrosDados = []
+
+    for amostra in amostras:
+        fields = amostra.get_fields()
+        outros_dados = outros_dados_amostra.filter(codigo_amostra = amostra.codigo)
+        outros_dados = outros_dados if len(outros_dados) != 0 else None
+        pair = (fields, outros_dados)
+        amostrasComOutrosDados.append(pair)
+
     template = loader.get_template('listAll.html')
     context = {
         'titulo' : 'amostras',
-        'array' : amostras,
+        'array' : amostrasComOutrosDados,
     }
     return HttpResponse(template.render(context, request))
 
@@ -127,28 +146,16 @@ def insertPossui(request):
         }
         return HttpResponse(template.render(context, request))
 
-def insertOutrosDadosAmostra(request):
-    if request.method == 'POST':
-        result = OutrosDadosAmostraModelForm(request.POST)
-        result.save()
-        return HttpResponseRedirect("..")
-    else:
-        form = OutrosDadosAmostraModelForm()
-        template = loader.get_template('form.html')
-        context = {
-            'operacao' : 'inserir',
-            'tipo' : 'outros_dados_amostra',
-            'form' : form
-        }
-        return HttpResponse(template.render(context, request))
 
-def insertOutrosDadosPaciente(request):
+def insertOutrosDadosPaciente(request, paciente_id):
     if request.method == 'POST':
         result = OutrosDadosPacienteModelForm(request.POST)
         result.save()
-        return HttpResponseRedirect("..")
+        return HttpResponseRedirect("../..")
     else:
         form = OutrosDadosPacienteModelForm()
+        form.fields["cpf"].choices = ((paciente_id,paciente_id),)
+
         template = loader.get_template('form.html')
         context = {
             'operacao' : 'inserir',
@@ -157,7 +164,22 @@ def insertOutrosDadosPaciente(request):
         }
         return HttpResponse(template.render(context, request))
 
+def insertOutrosDadosAmostra(request, amostra_id):
+    if request.method == 'POST':
+        result = OutrosDadosAmostraModelForm(request.POST)
+        result.save()
+        return HttpResponseRedirect("../..")
+    else:
+        form = OutrosDadosAmostraModelForm()
+        form.fields["codigo_amostra"].choices = ((amostra_id,amostra_id),)
 
+        template = loader.get_template('form.html')
+        context = {
+            'operacao' : 'inserir',
+            'tipo' : 'outros_dados_amostra',
+            'form' : form
+        }
+        return HttpResponse(template.render(context, request))
 
 def updatePaciente(request, paciente_id):
     paciente = Paciente.objects.get(pk = paciente_id)

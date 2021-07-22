@@ -14,10 +14,7 @@ urlpatterns = [
     path('amostra/insert/', views.insertAmostra, name='insertAmostra'),
     path('exame/insert/', views.insertExame, name='insertExame'),
     path('possui/insert/', views.insertPossui, name='insertPossui'),
-    path('outrosDadosAmostra/insert/', views.insertOutrosDadosAmostra, name='insertOutrosDadosAmostra'),
-    path('outrosDadosPaciente/insert/', views.insertOutrosDadosPaciente, name='insertOutrosDadosPaciente'),
 
-   
     path('paciente/update/<paciente_id>', views.updatePaciente, name='updatePaciente'),
     path('amostra/update/<amostra_id>', views.updateAmostra, name='updateAmostra'),
     path('exame/update/<exame_id>', views.updateExame, name='updateExame'),
@@ -31,5 +28,10 @@ urlpatterns = [
     path('possui/delete/<possui_id>', views.deletePossui, name='deletePossui'),
     path('outrosDadosAmostra/delete/<outros_dados_amostra_id>', views.deleteOutrosDadosAmostra, name='deleteOutrosDadosAmostra'),
     path('outrosDadosPaciente/delete/<outros_dados_paciente_id>', views.deleteOutrosDadosPaciente, name='deleteOutrosDadosPaciente'),
+    
+    path('paciente/other/insert/<paciente_id>', views.insertOutrosDadosPaciente, name='insertOutrosDadosPaciente'),
+    path('amostra/other/insert/<amostra_id>', views.insertOutrosDadosAmostra, name='insertOutrosDadosAmostra'),
 
+    # path('paciente/other/delete/<paciente_id>/<outro_id>', views.insertOutrosDadosPaciente, name='insertOutrosDadosPaciente'),
+    # path('amostra/other/delete/<amostra_id>/<<outro_id>', views.insertOutrosDadosAmostra, name='insertOutrosDadosAmostra'),
 ]

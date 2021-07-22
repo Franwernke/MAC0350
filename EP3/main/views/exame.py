@@ -33,7 +33,7 @@ def insertExamePaciente(request, exame_id):
     if request.method == 'POST':
         result = PossuiModelForm(request.POST)
         result.save()
-        return HttpResponseRedirect("../..")
+        return HttpResponseRedirect("..")
     else:
         form = PossuiModelForm()                
         form.fields["codigo_exame"].choices = ((exame_id,exame_id),)

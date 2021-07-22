@@ -67,7 +67,7 @@ class Outros_Dados_Paciente(models.Model):
 class Possui(models.Model):
     cpf = models.ForeignKey(Paciente, on_delete=models.PROTECT)
     codigo_exame = models.ForeignKey(Exame, on_delete=models.PROTECT)
-    codigo_amostra = models.ForeignKey(Amostra, on_delete=models.PROTECT, null=True)
+    codigo_amostra = models.ForeignKey(Amostra, on_delete=models.PROTECT, null=True, blank = True)
     
     def get_fields(self):
         return [(field.name, field.value_to_string(self)) for field in self._meta.fields]

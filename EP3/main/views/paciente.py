@@ -1,7 +1,7 @@
 from django.http.response import HttpResponse, HttpResponseBadRequest, HttpResponseRedirect
 from django.template import loader
 from main.forms import OutrosDadosPacienteModelForm, PacienteModelForm
-from ..models import Amostra, Outros_Dados_Paciente, Paciente, Possui
+from ..models import Amostra, Outros_Dados_Paciente, Paciente, Possui, Exame
 from django.db.models.deletion import ProtectedError
 
 def paciente(request):
@@ -27,12 +27,24 @@ def paciente(request):
 def detailsPaciente(request, paciente_id):
     paciente = Paciente.objects.get(pk = paciente_id)
     amostras = Amostra.objects.filter(cpf = paciente.cpf)
-    a = Possui.objects.filter(cpf = paciente.cpf)
+    posse = Possui.objects.filter(cpf = paciente.cpf).order_by("codigo_exame")
+
+    exames = []
+
+    for possui in posse:
+        codigo_exame = possui.codigo_exame.codigo
+        exame = Exame.objects.get(pk = codigo_exame)
+
+        if len(exames) == 0 or exames[-1] != exame:
+            exames.append(exame)
+
+    
+
     template = loader.get_template("detailsPaciente.html")
     context = {
         'paciente' : paciente,
         'amostras' : amostras,
-        'exames' : a,
+        'exames' : exames,
     }
     return HttpResponse(template.render(context, request))
 

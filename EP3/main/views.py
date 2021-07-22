@@ -1,3 +1,4 @@
+from django.db.models.deletion import ProtectedError
 from django.http.response import HttpResponseBadRequest, HttpResponseRedirect
 from django.http import HttpResponse
 from .models import Amostra, Outros_Dados_Amostra, Paciente, Exame
@@ -261,7 +262,8 @@ def updateOutrosDadosPaciente(request, outro_id):
         return HttpResponseRedirect("../..")
     else: 
         form = OutrosDadosPacienteModelForm(instance=outros_dados_paciente)
-        form.fields["cpf"].choices = ((outro_id, outro_id),)
+        form.fields["cpf"].choices = ((outros_dados_paciente.cpf.cpf, outros_dados_paciente.cpf.cpf),)
+        
 
         template = loader.get_template('form.html')
 
@@ -280,7 +282,7 @@ def updateOutrosDadosAmostra(request, outro_id):
         return HttpResponseRedirect("../..")
     else: 
         form = OutrosDadosAmostraModelForm(instance=outros_dados_amostra)
-        form.fields["codigo_amostra"].choices = ((outro_id, outro_id),)
+        form.fields["codigo_amostra"].choices = ((outros_dados_amostra.codigo_amostra.codigo, outros_dados_amostra.codigo_amostra.codigo),)
 
         template = loader.get_template('form.html')
 
@@ -294,17 +296,29 @@ def updateOutrosDadosAmostra(request, outro_id):
 
 def deletePaciente(request, paciente_id):
     paciente = Paciente.objects.get(pk = paciente_id)
-    paciente.delete()
+    try:
+        paciente.delete()
+    except(ProtectedError):
+        return HttpResponseBadRequest("Este paciente é protegido pela restrição de chave estrangeira!<br>" + 
+         "<a href=\"..\"> <button> Voltar </button> </a>")
     return HttpResponseRedirect("../../paciente/")
 
 def deleteAmostra(request, amostra_id):
     amostra = Amostra.objects.get(pk = amostra_id)
-    amostra.delete()
+    try:
+        amostra.delete()
+    except(ProtectedError):
+        return HttpResponseBadRequest("Esta amostra é protegida pela restrição de chave estrangeira!<br>" + 
+         "<a href=\"..\"> <button> Voltar </button> </a>")
     return HttpResponseRedirect("../../amostra/")
 
 def deleteExame(request, exame_id):
     exame = Exame.objects.get(pk = exame_id)
-    exame.delete()
+    try:
+        exame.delete()
+    except(ProtectedError):
+        return HttpResponseBadRequest("Este exame é protegido pela restrição de chave estrangeira!<br>" + 
+         "<a href=\"..\"> <button> Voltar </button> </a>")
     return HttpResponseRedirect("../../exame/")
 
 

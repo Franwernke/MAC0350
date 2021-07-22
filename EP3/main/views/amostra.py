@@ -29,6 +29,8 @@ def detailsAmostra(request, amostra_id):
     posse = Possui.objects.filter(codigo_amostra = amostra_id).order_by("codigo_exame")
     exames = []
 
+    paciente = posse.first().cpf
+
     for possui in posse:
         codigo_exame = possui.codigo_exame.codigo
         exame = Exame.objects.get(pk = codigo_exame)
@@ -37,6 +39,7 @@ def detailsAmostra(request, amostra_id):
             exames.append(exame)
 
     context = {
+        'paciente' : paciente,
         'amostra' : amostra,
         'exames': exames,
     }

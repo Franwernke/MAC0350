@@ -1,6 +1,6 @@
 from django.http.response import HttpResponse, HttpResponseBadRequest, HttpResponseRedirect
 from django.template import loader
-from main.forms import AmostraModelForm, OutrosDadosAmostraModelForm
+from main.forms import AmostraModelForm, OutrosDadosAmostraModelForm, PossuiModelForm
 from ..models import Amostra, Outros_Dados_Amostra, Possui, Exame
 from django.db.models.deletion import ProtectedError
 
@@ -53,6 +53,25 @@ def insertAmostra(request):
         return HttpResponseRedirect("..")
     else:
         form = AmostraModelForm()
+        template = loader.get_template('form.html')
+        context = {
+            'operacao' : 'inserir',
+            'tipo' : 'amostra',
+            'form' : form
+        }
+        return HttpResponse(template.render(context, request))
+    
+def insertAmostraExame(request, amostra_id):
+    if request.method == 'POST':
+        result = PossuiModelForm(request.POST)
+        result.save()
+        return HttpResponseRedirect("..")
+    else:
+        form = PossuiModelForm()
+        form.fields["codigo_amostra"].choices = ((amostra_id,amostra_id),)
+        
+        form.fields['codigo_exame'].choices
+
         template = loader.get_template('form.html')
         context = {
             'operacao' : 'inserir',

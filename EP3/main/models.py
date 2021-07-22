@@ -38,7 +38,7 @@ class Amostra(models.Model):
     data_de_coleta = models.DateTimeField()
     tipo_de_material = models.CharField(max_length=255)
     #cpfs = models.ManyToOneRel(Paciente, through='Possui')
-    codigos_exames = models.ManyToManyField(Exame, through='Possui')
+    #codigos_exames = models.ManyToManyField(Exame, through='Possui')
 
     def __str__(self):
         return "Codigo: " + str(self.codigo) + " cpf: " + self.cpf + " Tipo de Material: " + self.tipo_de_material

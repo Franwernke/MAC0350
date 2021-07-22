@@ -9,7 +9,7 @@ class PacienteModelForm(ModelForm):
 class AmostraModelForm(ModelForm):
     class Meta:
         model = Amostra
-        fields = ['codigo','cpf', 'data_de_coleta', 'tipo_de_material', 'codigos_exames']
+        fields = ['codigo','cpf', 'data_de_coleta', 'tipo_de_material']
 
 class ExameModelForm(ModelForm):
     class Meta:

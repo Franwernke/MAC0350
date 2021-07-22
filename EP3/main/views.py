@@ -253,14 +253,16 @@ def updatePossui(request, possui_id):
             }
         return HttpResponse(template.render(context, request))
 
-def updateOutrosDadosPaciente(request, outros_dados_paciente_id):
-    outros_dados_paciente = Outros_Dados_Paciente.objects.get(pk = outros_dados_paciente_id)
+def updateOutrosDadosPaciente(request, outro_id):
+    outros_dados_paciente = Outros_Dados_Paciente.objects.get(pk = outro_id)
     if request.method == 'POST':
         form = OutrosDadosPacienteModelForm(request.POST, instance=outros_dados_paciente)
         form.save()
-        return HttpResponseRedirect("../../outrosDadosPaciente/")
+        return HttpResponseRedirect("../..")
     else: 
         form = OutrosDadosPacienteModelForm(instance=outros_dados_paciente)
+        form.fields["cpf"].choices = ((outro_id, outro_id),)
+
         template = loader.get_template('form.html')
 
         context = {
@@ -270,14 +272,16 @@ def updateOutrosDadosPaciente(request, outros_dados_paciente_id):
             }
         return HttpResponse(template.render(context, request))
 
-def updateOutrosDadosAmostra(request, outros_dados_amostra_id):
-    outros_dados_amostra = Outros_Dados_Amostra.objects.get(pk = outros_dados_amostra_id)
+def updateOutrosDadosAmostra(request, outro_id):
+    outros_dados_amostra = Outros_Dados_Amostra.objects.get(pk = outro_id)
     if request.method == 'POST':
         form = OutrosDadosAmostraModelForm(request.POST, instance=outros_dados_amostra)
         form.save()
-        return HttpResponseRedirect("../../outrosDadosAmostra/")
+        return HttpResponseRedirect("../..")
     else: 
         form = OutrosDadosAmostraModelForm(instance=outros_dados_amostra)
+        form.fields["codigo_amostra"].choices = ((outro_id, outro_id),)
+
         template = loader.get_template('form.html')
 
         context = {

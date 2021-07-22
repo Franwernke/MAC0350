@@ -309,12 +309,14 @@ def deletePossui(request, possui_id):
     possui.delete()
     return HttpResponseRedirect("../../possui/")
 
-def deleteOutrosDadosAmostra(request, outros_dados_amostra_id):
-    outros_dados_amostra = Outros_Dados_Amostra.objects.get(pk = outros_dados_amostra_id)
-    outros_dados_amostra.delete()
-    return HttpResponseRedirect("../../outrosDadosAmostra/")
 
-def deleteOutrosDadosPaciente(request, outros_dados_paciente_id):
-    outros_dados_paciente = Outros_Dados_Paciente.objects.get(pk = outros_dados_paciente_id)
+def deleteOutrosDadosPaciente(request, outro_id):
+    outros_dados_paciente = Outros_Dados_Paciente.objects.get(pk = outro_id)
     outros_dados_paciente.delete()
-    return HttpResponseRedirect("../../outrosDadosPaciente/")
+    return HttpResponseRedirect("../..")
+
+def deleteOutrosDadosAmostra(request, outro_id):
+    outros_dados_amostra = Outros_Dados_Amostra.objects.get(pk = outro_id)
+    outros_dados_amostra.delete()
+    return HttpResponseRedirect("../..")
+

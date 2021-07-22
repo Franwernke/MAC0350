@@ -42,7 +42,11 @@
           Outros dados:
           <ul>
             {% for dado in row.1 %}
-              <li> {{ dado }} </li>
+              <li> 
+                {{ dado }}  
+                <a href="other/delete/{{dado.pk}}"><button>deletar</button></a> 
+                <a href="other/update/{{dado.pk}}"><button>modificar</button></a>
+              </li>
             {% endfor %}
           </ul>
         {% endif %}

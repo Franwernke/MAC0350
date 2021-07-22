@@ -26,12 +26,10 @@ urlpatterns = [
     path('amostra/delete/<amostra_id>', views.deleteAmostra, name='deleteAmostra'),
     path('exame/delete/<exame_id>', views.deleteExame, name='deleteExame'),
     path('possui/delete/<possui_id>', views.deletePossui, name='deletePossui'),
-    path('outrosDadosAmostra/delete/<outros_dados_amostra_id>', views.deleteOutrosDadosAmostra, name='deleteOutrosDadosAmostra'),
-    path('outrosDadosPaciente/delete/<outros_dados_paciente_id>', views.deleteOutrosDadosPaciente, name='deleteOutrosDadosPaciente'),
-    
+
     path('paciente/other/insert/<paciente_id>', views.insertOutrosDadosPaciente, name='insertOutrosDadosPaciente'),
     path('amostra/other/insert/<amostra_id>', views.insertOutrosDadosAmostra, name='insertOutrosDadosAmostra'),
 
-    # path('paciente/other/delete/<paciente_id>/<outro_id>', views.insertOutrosDadosPaciente, name='insertOutrosDadosPaciente'),
-    # path('amostra/other/delete/<amostra_id>/<<outro_id>', views.insertOutrosDadosAmostra, name='insertOutrosDadosAmostra'),
+    path('paciente/other/delete/<outro_id>', views.deleteOutrosDadosPaciente, name='deleteOutrosDadosPaciente'),
+    path('amostra/other/delete/<outro_id>', views.deleteOutrosDadosAmostra, name='deleteOutrosDadosAmostra'),
 ]

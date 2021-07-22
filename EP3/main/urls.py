@@ -25,6 +25,10 @@ urlpatterns = [
     path('exame/delete/<exame_id>', views.deleteExame, name='deleteExame'),
     path('possui/delete/<possui_id>', views.deletePossui, name='deletePossui'),
 
+    path('paciente/details/<paciente_id>', views.detailsPaciente, name='detailsPaciente'),
+    path('amostra/details/<amostra_id>', views.detailsAmostra, name='detailsAmostra'),
+    path('exame/details/<exame_id>', views.detailsExame, name='detailsExame'),
+
     path('paciente/other/insert/<paciente_id>', views.insertOutrosDadosPaciente, name='insertOutrosDadosPaciente'),
     path('amostra/other/insert/<amostra_id>', views.insertOutrosDadosAmostra, name='insertOutrosDadosAmostra'),
 

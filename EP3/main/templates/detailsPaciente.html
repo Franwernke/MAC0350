@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paciente</title>
+</head>
+<body>
+  <h1>{{ paciente.nome }}</h1>
+  {% for field, value in paciente.get_fields %}
+    {{ field }}: {{ value }} <br>
+  {% endfor %}
+
+  <h2>Amostras coletadas </h2>
+  <ol>
+    {% for amostra in amostras %}
+      <li>{{ amostra }}</li>
+    {% endfor %}
+  </ol>
+
+  <h2>Exames feitos</h2>
+  <ol>
+    {% for exame in exames %}
+    <li>  
+      {% for field, value in exame.get_fields %}
+        {{ field }}: {{ value }} 
+      {% endfor %}
+    </li>
+    {% endfor %}
+  </ol>
+
+  <a href="..">
+    <button>Voltar</button>
+  </a>
+</body>
+</html>

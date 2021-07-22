@@ -16,7 +16,6 @@
 
     .flex {
       display: flex;
-      flex-direction: row;
     }
 
   </style>
@@ -54,7 +53,7 @@
       
       {% if row.0 %}
         <div class="flex">
-          <a href="update/{{row.0.0.1}}" class="modificar">
+          <a href="update/{{row.0.0.1}}">
             <button> modificar </button>
           </a>
           <a href="delete/{{row.0.0.1}}">
@@ -63,15 +62,24 @@
           <a href="other/insert/{{row.0.0.1}}">
             <button> inserir outro dado </button>
           </a>
-      </div>
-      <br>
+          <a href="details/{{row.0.0.1}}">
+            <button> Mais detalhes </button>
+          </a>
+        </div>
+        <br>
       {% else %}
-        <a href="update/{{row.pk}}" class="modificar">
-          <button> modificar </button>
-        </a>
-        <a href="delete/{{row.pk}}">
-          <button> deletar </button>
-        </a>
+        <div class="flex">
+          <a href="update/{{row.pk}}">
+            <button> modificar </button>
+          </a>
+          <a href="delete/{{row.pk}}">
+            <button> deletar </button>
+          </a>
+          <a href="details/{{row.pk}}">
+            <button> Mais detalhes </button>
+          </a>
+        </div>
+        <br>
       {% endif %}
     {% endfor %}
   </div>

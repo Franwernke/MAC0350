@@ -1,9 +1,10 @@
+from django import template
 from django.db.models.deletion import ProtectedError
 from django.http.response import HttpResponseBadRequest, HttpResponseRedirect
 from django.http import HttpResponse
 from .models import Amostra, Outros_Dados_Amostra, Paciente, Exame
 
-from django.template import loader
+from django.template import context, loader
 from .forms import *
 
 def index(request):
@@ -86,6 +87,7 @@ def outros_dados_paciente(request):
     }
     return HttpResponse(template.render(context, request))
 
+
 def insertPaciente(request):
     if request.method == 'POST':
         result = PacienteModelForm(request.POST)
@@ -131,7 +133,6 @@ def insertExame(request):
         }
         return HttpResponse(template.render(context, request))
 
-
 def insertPossui(request):
     if request.method == 'POST':
         result = ExameModelForm(request.POST)
@@ -146,7 +147,6 @@ def insertPossui(request):
             'form' : form
         }
         return HttpResponse(template.render(context, request))
-
 
 def insertOutrosDadosPaciente(request, paciente_id):
     if request.method == 'POST':
@@ -181,6 +181,7 @@ def insertOutrosDadosAmostra(request, amostra_id):
             'form' : form
         }
         return HttpResponse(template.render(context, request))
+
 
 def updatePaciente(request, paciente_id):
     paciente = Paciente.objects.get(pk = paciente_id)
@@ -321,12 +322,10 @@ def deleteExame(request, exame_id):
          "<a href=\"..\"> <button> Voltar </button> </a>")
     return HttpResponseRedirect("../../exame/")
 
-
 def deletePossui(request, possui_id):
     possui = Possui.objects.get(pk = possui_id)
     possui.delete()
     return HttpResponseRedirect("../../possui/")
-
 
 def deleteOutrosDadosPaciente(request, outro_id):
     outros_dados_paciente = Outros_Dados_Paciente.objects.get(pk = outro_id)
@@ -338,3 +337,31 @@ def deleteOutrosDadosAmostra(request, outro_id):
     outros_dados_amostra.delete()
     return HttpResponseRedirect("../..")
 
+def detailsPaciente(request, paciente_id):
+    paciente = Paciente.objects.get(pk = paciente_id)
+    amostras = Amostra.objects.filter(cpf = paciente.cpf)
+    a = Possui.objects.filter(cpf = paciente.cpf)
+    # print(exames)
+    template = loader.get_template("detailsPaciente.html")
+    context = {
+        'paciente' : paciente,
+        'amostras' : amostras,
+        'exames' : a,
+    }
+    return HttpResponse(template.render(context, request))
+
+def detailsAmostra(request, amostra_id):
+    amostra = Amostra.objects.get(pk = amostra_id)
+    context = {
+        'amostra' : amostra
+    }
+    template = loader.get_template("detailsAmostra.html")
+    return HttpResponse(template.render(context, request))
+
+def detailsExame(request, exame_id):
+    exame = Exame.objects.get(pk = exame_id)
+    context = {
+        'exame' : exame
+    }
+    template = loader.get_template("detailsExame.html")
+    return HttpResponse(template.render(context, request))

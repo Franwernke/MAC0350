@@ -1,7 +1,7 @@
 from django.http.response import HttpResponse, HttpResponseBadRequest, HttpResponseRedirect
 from django.template import loader
 from main.forms import ExameModelForm
-from ..models import Exame
+from ..models import Exame, Possui, Amostra
 from django.db.models.deletion import ProtectedError
 
 def exame(request):
@@ -56,8 +56,20 @@ def deleteExame(request, exame_id):
 
 def detailsExame(request, exame_id):
     exame = Exame.objects.get(pk = exame_id)
+    posse = Possui.objects.filter(codigo_exame = exame_id).order_by("codigo_amostra")
+    amostras = []
+
+    for possui in posse:
+        if possui.codigo_amostra != None:
+            codigo_amostra = possui.codigo_amostra.codigo
+            amostra = Amostra.objects.get(pk = codigo_amostra)
+
+            if len(amostras) == 0 or amostras[-1] != amostra:
+                amostras.append(amostra) 
+
     context = {
-        'exame' : exame
+        'exame' : exame,
+        'amostras' : amostras,
     }
     template = loader.get_template("detailsExame.html")
     return HttpResponse(template.render(context, request))

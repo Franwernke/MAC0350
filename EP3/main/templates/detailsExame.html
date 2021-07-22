@@ -11,6 +11,20 @@
   {% for field, value in exame.get_fields %}
     {{ field }}: {{ value }} <br>
   {% endfor %}
+
+
+  <h2>Amostras usadas por esse exame</h2>
+  <ol>
+    {% for amostra in amostras %}
+    <li>
+      {% for field, value in amostra.get_fields %}
+        {{ field }}: {{ value }} 
+      {% endfor %}
+    </li>
+    {% endfor %}
+  </ol>
+
+
   <a href="..">
     <button>Voltar</button>
   </a>

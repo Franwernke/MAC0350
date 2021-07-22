@@ -78,6 +78,7 @@ def detailsExame(request, exame_id):
     exame = Exame.objects.get(pk = exame_id)
     posse = Possui.objects.filter(codigo_exame = exame_id).order_by("codigo_amostra")
     amostras = []
+    paciente = posse.first().cpf
 
     for possui in posse:
         if possui.codigo_amostra != None:
@@ -88,6 +89,7 @@ def detailsExame(request, exame_id):
                 amostras.append(amostra) 
 
     context = {
+        'paciente': paciente,
         'exame' : exame,
         'amostras' : amostras,
     }

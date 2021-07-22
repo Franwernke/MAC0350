@@ -12,6 +12,11 @@
     {{ field }}: {{ value }} <br>
   {% endfor %}
 
+  <h1>Paciente {{ paciente.nome }}</h1>
+  {% for field, value in paciente.get_fields %}
+    {{ field }}: {{ value }} <br>
+  {% endfor %}
+
 
   <h2>Amostras usadas por esse exame</h2>
   <ol>

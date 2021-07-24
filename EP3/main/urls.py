@@ -12,6 +12,8 @@ urlpatterns = [
 
     path('paciente/insert/', views.insertPaciente, name='insertPaciente'),
     path('amostra/insert/', views.insertAmostra, name='insertAmostra'),
+    path('amostra/insert/<amostra_id>', views.insertAmostraExame, name='insertAmostraExame'),
+
     path('exame/insert/', views.insertExame, name='insertExame'),
     path('exame/insert/<exame_id>', views.insertExamePaciente, name='insertExamePaciente'),
     path('possui/insert/', views.insertPossui, name='insertPossui'),

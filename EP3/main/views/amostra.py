@@ -50,7 +50,7 @@ def insertAmostra(request):
     if request.method == 'POST':
         result = AmostraModelForm(request.POST)
         result.save()
-        return HttpResponseRedirect("..")
+        return HttpResponseRedirect(str(Amostra.objects.last().codigo))
     else:
         form = AmostraModelForm()
         template = loader.get_template('form.html')
@@ -62,20 +62,41 @@ def insertAmostra(request):
         return HttpResponse(template.render(context, request))
     
 def insertAmostraExame(request, amostra_id):
+    cpf = Amostra.objects.get(pk = amostra_id).cpf
+
     if request.method == 'POST':
         result = PossuiModelForm(request.POST)
         result.save()
+
+        posse = Possui.objects.order_by("id")
+        codigo_exame = posse.last().codigo_exame.codigo
+        posse = posse.filter(codigo_exame = codigo_exame)
+
+        if posse.count() == 2 and posse.first().codigo_amostra == None:
+            posse.first().delete()
+
         return HttpResponseRedirect("..")
     else:
-        form = PossuiModelForm()
-        form.fields["codigo_amostra"].choices = ((amostra_id,amostra_id),)
         
-        form.fields['codigo_exame'].choices
+        posse = Possui.objects.filter(cpf = cpf).order_by("codigo_exame")
+        exames = []
+
+        for possui in posse:
+            codigo_exame = possui.codigo_exame.codigo
+            exame = Exame.objects.get(pk = codigo_exame)
+
+            if len(exames) == 0 or exames[-1][0] != exame.codigo:
+                exames.append((exame.codigo, exame.codigo))
+
+        form = PossuiModelForm()    
+        form.fields["codigo_amostra"].choices = ((amostra_id,amostra_id),)
+        form.fields["cpf"].choices = ((cpf, cpf),)
+        form.fields['codigo_exame'].choices = tuple(exames)
 
         template = loader.get_template('form.html')
         context = {
-            'operacao' : 'inserir',
-            'tipo' : 'amostra',
+            'operacao' : 'Escolha um',
+            'tipo' : 'exame',
             'form' : form
         }
         return HttpResponse(template.render(context, request))

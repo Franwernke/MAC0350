@@ -75,7 +75,7 @@ def insertAmostraExame(request, amostra_id):
         if posse.count() == 2 and posse.first().codigo_amostra == None:
             posse.first().delete()
 
-        return HttpResponseRedirect("..")
+        return HttpResponseRedirect("../" + str(amostra_id))
     else:
         
         posse = Possui.objects.filter(cpf = cpf).order_by("codigo_exame")
@@ -178,3 +178,6 @@ def deleteOutrosDadosAmostra(request, outro_id):
     outros_dados_amostra = Outros_Dados_Amostra.objects.get(pk = outro_id)
     outros_dados_amostra.delete()
     return HttpResponseRedirect("../..")
+
+def amostraRedirect(request, amostra_id):
+    return HttpResponseRedirect(".")

@@ -5,6 +5,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('paciente/', views.paciente, name='paciente'),
     path('amostra/', views.amostra, name='amostra'),
+    path('amostra/<amostra_id>', views.amostraRedirect, name='amostraID'),
     path('exame/', views.exame, name='exame'),
     path('possui/', views.possui, name='possui'),
     path('outrosDadosAmostra/', views.outros_dados_amostra, name='outrosDadosAmostra'),
@@ -30,7 +31,9 @@ urlpatterns = [
 
     path('paciente/details/<paciente_id>', views.detailsPaciente, name='detailsPaciente'),
     path('amostra/details/<amostra_id>', views.detailsAmostra, name='detailsAmostra'),
+    path('amostra/details/insert/<amostra_id>', views.insertAmostraExame, name='detailsInsertAmostraExame'),
     path('exame/details/<exame_id>', views.detailsExame, name='detailsExame'),
+        
 
     path('paciente/other/insert/<paciente_id>', views.insertOutrosDadosPaciente, name='insertOutrosDadosPaciente'),
     path('amostra/other/insert/<amostra_id>', views.insertOutrosDadosAmostra, name='insertOutrosDadosAmostra'),

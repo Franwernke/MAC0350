@@ -1,4 +1,5 @@
 from django.urls import path
+from django.shortcuts import redirect
 from . import views
 
 urlpatterns = [
@@ -43,4 +44,7 @@ urlpatterns = [
 
     path('paciente/other/update/<outro_id>', views.updateOutrosDadosPaciente, name='updateOutrosDadosPaciente'),
     path('amostra/other/update/<outro_id>', views.updateOutrosDadosAmostra, name='updateOutrosDadosAmostra'),
+    
+    path('paciente/other/', lambda req: redirect('..')),
+    path('amostra/other/', lambda req: redirect('..')),
 ]

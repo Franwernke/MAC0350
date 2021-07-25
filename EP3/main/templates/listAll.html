@@ -9,15 +9,21 @@
       padding: 0 0 50px 50px;
 
       display: grid;
-      grid-template-columns: 400px 80px 80px;
-      row-gap: 10px;
+      place-items: center;
+      grid-template-columns: 400px 80px 80px 80px 80px;
+      gap: 10px;
     }
 
+    .data {
+      justify-self: left;
+    }
 
     .flex {
       display: flex;
     }
-
+    .btns a {
+      text-decoration: none;
+    }
   </style>
   <title> {{ titulo }} </title>
 </head>
@@ -25,8 +31,7 @@
   <h1>{{ titulo }}</h1>
   <div class="grid">
     {% for row in array %}
-      <span>
-        
+      <span class="data">
         {% if row.0 %}
           {% for field, data in row.0 %}
             {{ field.capitalize }}: {{ data }} <br>
@@ -52,7 +57,6 @@
       </span>
       
       {% if row.0 %}
-        <div class="flex">
           <a href="update/{{row.0.0.1}}">
             <button> modificar </button>
           </a>
@@ -65,10 +69,7 @@
           <a href="details/{{row.0.0.1}}">
             <button> Mais detalhes </button>
           </a>
-        </div>
-        <br>
       {% else %}
-        <div class="flex">
           <a href="update/{{row.pk}}">
             <button> modificar </button>
           </a>
@@ -78,17 +79,18 @@
           <a href="details/{{row.pk}}">
             <button> Mais detalhes </button>
           </a>
-        </div>
-        <br>
+          <a style="width: 1px;"></a>
       {% endif %}
     {% endfor %}
   </div>
 
-  <a href='insert'> 
-    <button> inserir </button>
-  </a>
-  <a href='..'> 
-    <button> voltar</button>
-  </a>
+  <div class="btns">
+    <a href='insert' >
+      <button> inserir </button>
+    </a>
+    <a href='..'> 
+      <button> voltar</button>
+    </a>
+  </div>
 </body>
 </html>

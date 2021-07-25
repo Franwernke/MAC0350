@@ -47,7 +47,7 @@ class Amostra(models.Model):
 
 class Outros_Dados_Amostra(models.Model):
     dado = models.CharField(max_length=255)
-    codigo_amostra = models.ForeignKey(Amostra, on_delete=models.PROTECT)
+    codigo_amostra = models.ForeignKey(Amostra, on_delete=models.CASCADE)
 
     def get_fields(self):
         return [(field.name, field.value_to_string(self)) for field in self._meta.fields]
@@ -56,7 +56,7 @@ class Outros_Dados_Amostra(models.Model):
 
 class Outros_Dados_Paciente(models.Model):
     dado = models.CharField(max_length=255)
-    cpf = models.ForeignKey(Paciente, on_delete=models.PROTECT)
+    cpf = models.ForeignKey(Paciente, on_delete=models.CASCADE)
 
     def get_fields(self):
         return [(field.name, field.value_to_string(self)) for field in self._meta.fields]

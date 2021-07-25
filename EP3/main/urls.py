@@ -31,10 +31,12 @@ urlpatterns = [
     path('possui/delete/<possui_id>', views.deletePossui, name='deletePossui'),
 
     path('paciente/details/<paciente_id>', views.detailsPaciente, name='detailsPaciente'),
+    path('paciente/details/', lambda req: redirect('..')),
     path('amostra/details/<amostra_id>', views.detailsAmostra, name='detailsAmostra'),
     path('amostra/details/insert/<amostra_id>', views.insertAmostraExame, name='detailsInsertAmostraExame'),
+    path('amostra/details/', lambda req: redirect('..')),
     path('exame/details/<exame_id>', views.detailsExame, name='detailsExame'),
-        
+    path('exame/details/', lambda req: redirect('..')),
 
     path('paciente/other/insert/<paciente_id>', views.insertOutrosDadosPaciente, name='insertOutrosDadosPaciente'),
     path('amostra/other/insert/<amostra_id>', views.insertOutrosDadosAmostra, name='insertOutrosDadosAmostra'),

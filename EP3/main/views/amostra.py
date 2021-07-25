@@ -122,6 +122,14 @@ def updateAmostra(request, amostra_id):
 
 def deleteAmostra(request, amostra_id):
     amostra = Amostra.objects.get(pk = amostra_id)
+
+    posse = Possui.objects.filter(codigo_amostra = amostra_id).order_by("codigo_exame")
+
+    for possui in posse:
+        if (posse.filter(codigo_exame = possui.codigo_exame.codigo).count() == 1):
+            possui.codigo_amostra = None
+            possui.save()
+
     try:
         amostra.delete()
     except(ProtectedError):

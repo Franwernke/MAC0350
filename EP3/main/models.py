@@ -69,6 +69,12 @@ class Possui(models.Model):
     codigo_exame = models.ForeignKey(Exame, on_delete=models.PROTECT)
     codigo_amostra = models.ForeignKey(Amostra, on_delete=models.CASCADE, null=True, blank = True)
     
+    class Meta:
+        constraints = [
+                models.UniqueConstraint(fields=['cpf', 'codigo_exame', 'codigo_amostra'], name='unique_exame_amostra')
+                ]
+    
+    
     def get_fields(self):
         return [(field.name, field.value_to_string(self)) for field in self._meta.fields]
     def __str__(self):

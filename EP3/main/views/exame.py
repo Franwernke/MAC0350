@@ -67,6 +67,12 @@ def updateExame(request, exame_id):
 
 def deleteExame(request, exame_id):
     exame = Exame.objects.get(pk = exame_id)
+
+    posse = Possui.objects.filter(codigo_exame = exame_id)
+
+    if (posse.count() == 1 and posse.first().codigo_amostra == None):
+        posse.first().delete()
+
     try:
         exame.delete()
     except(ProtectedError):

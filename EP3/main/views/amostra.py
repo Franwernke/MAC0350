@@ -126,7 +126,7 @@ def deleteAmostra(request, amostra_id):
     posse = Possui.objects.filter(codigo_amostra = amostra_id).order_by("codigo_exame")
 
     for possui in posse:
-        if (posse.filter(codigo_exame = possui.codigo_exame.codigo).count() == 1):
+        if (Possui.objects.filter(codigo_exame = possui.codigo_exame.codigo).count() == 1):
             possui.codigo_amostra = None
             possui.save()
 
